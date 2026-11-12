@@ -9,7 +9,9 @@ const STORE_CONFIG = {
   author: "Azizul (FishingCorp / Atoklure)",
   year: 2026,
   githubPagesUrl: "https://fishingcorp2020.github.io/apk-store",
-  githubRepoUrl: "https://github.com/fishingcorp2020/apk-store"
+  githubRepoUrl: "https://github.com/fishingcorp2020/apk-store",
+  // Masukkan Google OAuth Client ID anda di sini (cth: "xxxxxx.apps.googleusercontent.com"):
+  googleClientId: ""
 };
 
 const APPS_DATA = [
