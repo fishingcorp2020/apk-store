@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ms" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PlayStore APK Hub - Pusat Muat Turun Aplikasi Android Bebas</title>
+  <meta name="description" content="Muat turun fail APK rasmi, pantas dan selamat untuk telefon Android & Android TV Box. Termasuk TV KITA, JetiNav, CakapGo, DaebakTV dan pelbagai lagi.">
+  <meta name="theme-color" content="#131314">
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path fill='%2300A170' d='M6.2 3.8C5.5 4.6 5 5.8 5 7.4v25.2c0 1.6.5 2.8 1.2 3.6l.1.1 14.1-14.1v-.3L6.3 3.7l-.1.1z'/><path fill='%23FFBA00' d='M24.7 26.5l-4.3-4.3v-.4l4.3-4.3.1.1 5.1 2.9c1.5.8 1.5 2.2 0 3l-5.2 3z'/><path fill='%23FF3333' d='M24.8 26.4L20.4 22 6.2 36.2c.5.5 1.3.6 2.3 0l16.3-9.8z'/><path fill='%230086F8' d='M24.8 17.6L8.5 7.8c-1-.6-1.8-.5-2.3 0L20.4 22l4.4-4.4z'/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand" onclick="filterByCategory('all'); return false;">
+        <div class="play-logo">
+          <!-- Google Play Iconic Triangle Logo -->
+          <svg viewBox="0 0 40 40">
+            <path fill="#00A170" d="M6.2 3.8C5.5 4.6 5 5.8 5 7.4v25.2c0 1.6.5 2.8 1.2 3.6l.1.1 14.1-14.1v-.3L6.3 3.7l-.1.1z"/>
+            <path fill="#FFBA00" d="M24.7 26.5l-4.3-4.3v-.4l4.3-4.3.1.1 5.1 2.9c1.5.8 1.5 2.2 0 3l-5.2 3z"/>
+            <path fill="#FF3333" d="M24.8 26.4L20.4 22 6.2 36.2c.5.5 1.3.6 2.3 0l16.3-9.8z"/>
+            <path fill="#0086F8" d="M24.8 17.6L8.5 7.8c-1-.6-1.8-.5-2.3 0L20.4 22l4.4-4.4z"/>
+          </svg>
+        </div>
+        <span class="brand-text">Play<span>Store</span></span>
+      </a>
+
+      <!-- SEARCH BOX -->
+      <div class="search-wrapper">
+        <span class="search-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <input type="text" id="searchInput" class="search-input-box" placeholder="Cari aplikasi, utiliti, TV..." autocomplete="off">
+        <button id="clearSearchBtn" class="clear-search-btn" title="Kosongkan carian">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- NAVBAR ACTIONS -->
+      <div class="nav-actions">
+        <button id="themeToggleBtn" class="btn-icon" title="Tukar Tema Gelap/Cerah">
+          <svg id="themeIconDark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="themeIconLight" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <button onclick="openInstallGuideModal()" class="btn-pill" title="Cara Pasang APK di Android">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>Panduan APK</span>
+        </button>
+
+        <a id="githubRepoLink" href="https://github.com/fishingcorp2020" target="_blank" class="btn-pill" title="GitHub Repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CATEGORY FILTER CHIPS -->
+  <nav class="subnav-tabs">
+    <div class="tabs-container">
+      <button class="tab-btn active" data-category="all" onclick="filterByCategory('all')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        Semua Aplikasi
+      </button>
+      <button class="tab-btn" data-category="navigasi" onclick="filterByCategory('navigasi')">
+        🧭 Navigasi & GPS
+      </button>
+      <button class="tab-btn" data-category="hiburan" onclick="filterByCategory('hiburan')">
+        📺 Hiburan & TV
+      </button>
+      <button class="tab-btn" data-category="komunikasi" onclick="filterByCategory('komunikasi')">
+        💬 Komunikasi & Suara
+      </button>
+      <button class="tab-btn" data-category="utiliti" onclick="filterByCategory('utiliti')">
+        🛠️ Utiliti & Kamera
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="main-wrapper">
+
+    <!-- FEATURED HERO CAROUSEL -->
+    <section id="heroSection" class="hero-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>Pilihan Utama Hari Ini</span>
+        </h2>
+      </div>
+      <div id="heroSlider" class="hero-slider">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- APPS GRID SECTION -->
+    <section class="catalog-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span id="catalogTitle">Semua Aplikasi</span>
+          <span id="catalogCount" class="section-count">(8 aplikasi)</span>
+        </h2>
+      </div>
+
+      <div id="appsGrid" class="apps-grid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- NO RESULTS PLACEHOLDER -->
+      <div id="noResults" class="no-results">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+        <h3>Tiada Aplikasi Ditemui</h3>
+        <p>Cuba gunakan kata kunci carian yang berbeza atau pilih kategori lain.</p>
+      </div>
+    </section>
+
+    <!-- INSTALL GUIDE BANNER -->
+    <section class="guide-banner">
+      <div class="guide-banner-left">
+        <h3>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          Cara Pasang Fail APK
+        </h3>
+        <p>Aplikasi di gedung ini diedarkan secara terus tanpa Play Store rasmi Google. Ikuti langkah mudah ini untuk memasang APK di telefon Android anda:</p>
+      </div>
+
+      <div class="guide-steps">
+        <div class="guide-step-card">
+          <div class="guide-step-number">Langkah 1</div>
+          <h4>Muat Turun APK</h4>
+          <p>Tekan butang "Muat Turun" pada mana-mana app pilihan anda.</p>
+        </div>
+        <div class="guide-step-card">
+          <div class="guide-step-number">Langkah 2</div>
+          <h4>Buka Notifikasi</h4>
+          <p>Ketik pada notifikasi muat turun selesai atau cari fail di folder 'Downloads'.</p>
+        </div>
+        <div class="guide-step-card">
+          <div class="guide-step-number">Langkah 3</div>
+          <h4>Luluskan Sumber</h4>
+          <p>Jika amaran "Install Unknown Apps" muncul, tekan <strong>Settings -> Allow from this source</strong>.</p>
+        </div>
+        <div class="guide-step-card">
+          <div class="guide-step-number">Langkah 4</div>
+          <h4>Tekan Pasang</h4>
+          <p>Tekan butang <strong>Install</strong> dan tunggu beberapa saat sehingga selesai!</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- APP DETAIL MODAL -->
+  <div id="appModal" class="modal-overlay" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" onclick="closeModal()" title="Tutup">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-body">
+        <!-- APP HEADER -->
+        <div class="modal-app-header">
+          <img id="modalIcon" src="" alt="Icon" class="modal-app-icon">
+          <div class="modal-app-title-group">
+            <h1 id="modalTitle" class="modal-app-title">App Name</h1>
+            <div id="modalDev" class="modal-app-dev">Developer</div>
+            <div id="modalCategory" class="modal-app-category">Kategori</div>
+          </div>
+        </div>
+
+        <!-- METRICS ROW -->
+        <div class="metrics-strip">
+          <div class="metric-col">
+            <div class="metric-val">
+              <span id="modalRating">4.8</span>
+              <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <div id="modalReviews" class="metric-lbl">1.2k ulasan</div>
+          </div>
+          <div class="metric-col">
+            <div id="modalDownloads" class="metric-val">10K+</div>
+            <div class="metric-lbl">Muat turun</div>
+          </div>
+          <div class="metric-col">
+            <div id="modalAge" class="metric-val">3+</div>
+            <div class="metric-lbl">Semua Umur</div>
+          </div>
+          <div class="metric-col">
+            <div id="modalSize" class="metric-val">7.9 MB</div>
+            <div class="metric-lbl">Saiz Fail</div>
+          </div>
+        </div>
+
+        <!-- ACTIONS ROW -->
+        <div class="modal-actions-row">
+          <a id="modalDownloadBtn" href="#" class="btn-modal-install" download>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span id="modalDownloadText">Muat Turun APK</span>
+          </a>
+
+          <button id="modalQrBtn" class="btn-modal-secondary" onclick="openQrForCurrentApp()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Kod QR</span>
+          </button>
+
+          <button id="modalShareBtn" class="btn-modal-secondary" onclick="shareCurrentApp()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            <span>Kongsi</span>
+          </button>
+        </div>
+
+        <!-- PLAY PROTECT VERIFIED -->
+        <div class="protect-pill">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <polyline points="9 12 11 14 15 10"></polyline>
+          </svg>
+          <div>
+            <strong>Disahkan Selamat & Bebas Virus</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">Pakej APK ini diimbas secara tempatan dan tidak mengandungi iklan berniat jahat atau perisian intip.</div>
+          </div>
+        </div>
+
+        <!-- ABOUT APP -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">Tentang Aplikasi Ini</h3>
+          <p id="modalDesc" class="modal-desc"></p>
+        </div>
+
+        <!-- FEATURES LIST -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">Ciri-Ciri Utama</h3>
+          <ul id="modalFeatures" class="features-list"></ul>
+        </div>
+
+        <!-- WHATS NEW -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">Apa yang Baharu</h3>
+          <div id="modalWhatsNew" class="whats-new-box"></div>
+        </div>
+
+        <!-- TECH SPECS -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">Maklumat Teknikal</h3>
+          <table class="tech-table">
+            <tbody>
+              <tr>
+                <td>Nama Pakej</td>
+                <td id="modalPkgName">-</td>
+              </tr>
+              <tr>
+                <td>Versi Terkini</td>
+                <td id="modalVersion">-</td>
+              </tr>
+              <tr>
+                <td>Keperluan Android</td>
+                <td id="modalMinAndroid">-</td>
+              </tr>
+              <tr>
+                <td>Saiz Muat Turun</td>
+                <td id="modalFileSize">-</td>
+              </tr>
+              <tr>
+                <td>Pembangun</td>
+                <td id="modalDeveloper">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR CODE MODAL POPUP -->
+  <div id="qrModal" class="qr-modal-overlay" onclick="closeQrModalOnBackdrop(event)">
+    <div class="qr-card">
+      <button class="modal-close-btn" onclick="closeQrModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <h3 id="qrAppTitle">Imbas Kod QR</h3>
+      <p>Buka kamera telefon anda untuk imbas dan muat turun terus ke telefon tanpa kabel.</p>
+
+      <div id="qrCodeContainer" class="qr-container"></div>
+
+      <div style="font-size: 0.75rem; color: var(--text-muted); word-break: break-all;" id="qrLinkText"></div>
+    </div>
+  </div>
+
+  <!-- INSTALL GUIDE MODAL -->
+  <div id="installGuideModal" class="modal-overlay" onclick="closeGuideModalOnBackdrop(event)">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <button class="modal-close-btn" onclick="closeInstallGuideModal()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-body">
+        <h2 style="font-size: 1.35rem; margin-bottom: 8px;">Panduan Memasang APK di Android</h2>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px;">
+          Android mengutamakan keselamatan dengan menyekat fail luar Google Play secara lalai. Ikuti panduan mengikut jenama telefon anda di bawah:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="guide-step-card">
+            <h4>📱 Telefon Samsung (One UI)</h4>
+            <p>1. Bila muat turun selesai, ketik fail APK.<br>
+            2. Bila pop-up <em>"Chrome / File Manager needs permission"</em> keluar, tekan <strong>Settings</strong>.<br>
+            3. Hidupkan suis <strong>"Allow from this source"</strong> dan tekan <strong>Install</strong>.</p>
+          </div>
+
+          <div class="guide-step-card">
+            <h4>📱 Telefon Xiaomi / Redmi / POCO (HyperOS / MIUI)</h4>
+            <p>1. Ketik fail APK yang dimuat turun.<br>
+            2. Akan ada skrin amaran keselamatan 10 saat.<br>
+            3. Tandakan kotak <em>"I am aware of possible risks"</em> dan tekan <strong>OK</strong> -> <strong>Install</strong>.</p>
+          </div>
+
+          <div class="guide-step-card">
+            <h4>📱 Telefon Vivo / iQOO / Oppo / Realme</h4>
+            <p>1. Buka fail dari bar notifikasi.<br>
+            2. Masukkan kata laluan / cap jari telefon jika diminta untuk mengesahkan pemasangan.<br>
+            3. Tekan <strong>"Install anyway"</strong> atau <strong>"Benarkan Pemasangan"</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <strong>PlayStore APK Hub</strong> &bull; Disediakan oleh Azizul (FishingCorp / Atoklure) &copy; 2026.
+        <div style="font-size: 0.75rem; margin-top: 4px; color: var(--text-dim);">
+          Semua aplikasi adalah hak cipta pencipta masing-masing. Diedarkan untuk kemudahan pengguna.
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#" onclick="openInstallGuideModal(); return false;">Bantuan Pasang APK</a>
+        <a href="https://github.com/fishingcorp2020" target="_blank">Akaun GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MOBILE BOTTOM NAVIGATION (KHAS UNTUK SKRIN TELEFON) -->
+  <div class="mobile-bottom-nav">
+    <button class="mobile-nav-item active" onclick="filterByCategory('all'); window.scrollTo({top:0, behavior:'smooth'});">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      <span>Aplikasi</span>
+    </button>
+    <button class="mobile-nav-item" onclick="document.getElementById('searchInput').focus();">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <span>Cari</span>
+    </button>
+    <button class="mobile-nav-item" onclick="openInstallGuideModal();">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <span>Panduan</span>
+    </button>
+    <button class="mobile-nav-item" onclick="toggleTheme();">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <span>Tema</span>
+    </button>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="apps-data.js"></script>
+  <script src="assets/qrcode.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
