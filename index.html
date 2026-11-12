@@ -241,6 +241,17 @@
           </div>
         </div>
 
+        <!-- BANNER AMARAN NAIK TARAF (JIKA TIDAK AKTIF) -->
+        <div id="modalMaintBanner" class="maintenance-notice" style="display:none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+          </svg>
+          <div>
+            <strong>Aplikasi Sedang Dinaik Taraf</strong>
+            <p id="modalMaintText" style="margin:2px 0 0; font-size:0.82rem; opacity:0.9;">Aplikasi ini sedang diselenggara untuk naik taraf. Muat turun fail APK ditutup sementara waktu.</p>
+          </div>
+        </div>
+
         <!-- ACTIONS ROW -->
         <div class="modal-actions-row">
           <a id="modalDownloadBtn" href="#" class="btn-modal-install" download>
@@ -392,6 +403,32 @@
             3. Tekan <strong>"Install anyway"</strong> atau <strong>"Benarkan Pemasangan"</strong>.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAINTENANCE / NAIK TARAF MODAL -->
+  <div id="maintenanceModal" class="modal-overlay" onclick="closeMaintenanceModalOnBackdrop(event)">
+    <div class="modal-dialog" style="max-width: 440px; text-align: center;">
+      <button class="modal-close-btn" onclick="closeMaintenanceModal()" title="Tutup">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-body" style="padding: 28px 20px 24px; text-align: center;">
+        <div class="maintenance-icon-badge">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+          </svg>
+        </div>
+        <h2 id="maintAppTitle" style="font-size: 1.25rem; margin: 12px 0 8px; color: var(--text-main);">Aplikasi Sedang Dinaik Taraf</h2>
+        <p id="maintAppMessage" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 22px;">
+          Aplikasi ini sedang diselenggara untuk naik taraf.
+        </p>
+        <button type="button" class="btn-maintenance-close" onclick="closeMaintenanceModal()">
+          Faham & Tutup
+        </button>
       </div>
     </div>
   </div>

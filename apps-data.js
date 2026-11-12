@@ -20,6 +20,7 @@ const APPS_DATA = [
   {
     id: "tvkita",
     name: "TV KITA Pro",
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Siaran Langsung TV Malaysia & Arkib Hiburan VOD",
     developer: "Atoklure TV",
     category: "hiburan",
@@ -55,6 +56,7 @@ const APPS_DATA = [
   {
     id: "jetinav",
     name: "JetiNav All-Terrain",
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "GPS Navigasi Luar Talian (Laut, Sungai & Hutan)",
     developer: "Atoklure Marine & Outdoor",
     category: "navigasi",
@@ -90,6 +92,7 @@ const APPS_DATA = [
   {
     id: "cakapgo",
     name: "CakapGo",
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Penterjemah Suara Dua Hala & Kamus Frasa Pintar",
     developer: "Atoklure Studio",
     category: "komunikasi",
@@ -125,6 +128,7 @@ const APPS_DATA = [
   {
     id: "daebaktv",
     name: "Daebak TV (대박 TV)",
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Filem, K-Drama & Siaran Korea Percuma VIP",
     developer: "Atoklure VIP",
     category: "hiburan",
@@ -160,6 +164,7 @@ const APPS_DATA = [
   {
     id: "stickerkilat",
     name: "StickerKilat",
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Pembuat Sticker WhatsApp (Auto Cut AI & Border)",
     developer: "Atoklure Studio",
     category: "utiliti",
@@ -195,6 +200,7 @@ const APPS_DATA = [
   {
     id: "sembangoffline",
     name: "Sembang Offline",
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Walkie-Talkie Suara Tanpa Internet (Wi-Fi Direct P2P)",
     developer: "FishingCorp Labs",
     category: "komunikasi",
@@ -230,6 +236,7 @@ const APPS_DATA = [
   {
     id: "smartbulbcctv",
     name: "SmartBulb CCTV Pro",
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Pengawal Kamera Mentol E27 Wi-Fi PTZ 360° (Direct LAN/AP)",
     developer: "FishingCorp Security",
     category: "utiliti",
@@ -265,6 +272,7 @@ const APPS_DATA = [
   {
     id: "kampungwaze",
     name: "KampungWaze",
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Navigasi Lorong Desa & Jalan Komuniti Luar Bandar",
     developer: "Atoklure Komuniti",
     category: "navigasi",

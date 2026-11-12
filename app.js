@@ -82,14 +82,23 @@ function renderHeroSlider() {
           <span>&bull;</span>
           <span>${app.fileSize}</span>
         </div>
-        <button class="btn-hero-download" onclick="event.stopPropagation(); triggerDownload('${app.id}');">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Pasang
-        </button>
+        ${app.isOpen !== false ? `
+          <button class="btn-hero-download" onclick="event.stopPropagation(); triggerDownload('${app.id}');">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Pasang
+          </button>
+        ` : `
+          <button class="btn-hero-download maintenance" onclick="event.stopPropagation(); showMaintenanceModal('${app.id}');">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+            Diselenggara
+          </button>
+        `}
       </div>
     </div>
   `).join("");
@@ -167,8 +176,8 @@ function renderCatalog() {
   noResults.style.display = "none";
 
   appsGrid.innerHTML = filtered.map(app => `
-    <div class="app-card" onclick="openAppModal('${app.id}')">
-      ${app.badge ? `<span class="app-badge-tag">${app.badge}</span>` : ""}
+    <div class="app-card ${app.isOpen === false ? 'is-maintenance' : ''}" onclick="openAppModal('${app.id}')">
+      ${app.isOpen === false ? `<span class="app-badge-tag maintenance">🔧 Naik Taraf</span>` : (app.badge ? `<span class="app-badge-tag">${app.badge}</span>` : "")}
       <div class="app-card-top">
         <img src="${app.icon}" alt="${app.name}" class="app-icon" loading="lazy">
         <div class="app-info">
@@ -194,14 +203,23 @@ function renderCatalog() {
       </div>
 
       <div class="app-card-actions">
-        <button class="btn-download-apk" onclick="event.stopPropagation(); triggerDownload('${app.id}');">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Muat Turun
-        </button>
+        ${app.isOpen !== false ? `
+          <button class="btn-download-apk" onclick="event.stopPropagation(); triggerDownload('${app.id}');">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Muat Turun
+          </button>
+        ` : `
+          <button class="btn-download-apk maintenance" onclick="event.stopPropagation(); showMaintenanceModal('${app.id}');">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+            Diselenggara
+          </button>
+        `}
         <button class="btn-details-icon" onclick="event.stopPropagation(); openAppModal('${app.id}');" title="Maklumat Lanjut">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"></circle>
@@ -253,23 +271,47 @@ function openAppModal(appId) {
 
   // Download button
   const downloadBtn = document.getElementById("modalDownloadBtn");
-  downloadBtn.href = app.apkFile;
-  downloadBtn.setAttribute("download", app.apkFile.split("/").pop());
-  downloadBtn.onclick = (e) => {
-    const currentUser = (typeof getLoggedInUser === "function" ? getLoggedInUser() : null) || { name: "Tetamu", email: "Tidak diketahui" };
-    trackSheetsEvent({
-      type: "download",
-      appName: app.name,
-      appVersion: app.version,
-      fileSize: app.fileSize,
-      userName: currentUser.name,
-      userEmail: currentUser.email,
-      timestamp: new Date().toLocaleString("ms-MY", { timeZone: "Asia/Kuala_Lumpur" })
-    });
-    showToast(`Memulakan muat turun ${app.name} (${app.fileSize})...`);
-  };
+  const modalQrBtn = document.getElementById("modalQrBtn");
+  const modalMaintBanner = document.getElementById("modalMaintBanner");
 
-  document.getElementById("modalDownloadText").textContent = `Muat Turun APK (${app.fileSize})`;
+  if (app.isOpen !== false) {
+    downloadBtn.classList.remove("disabled-maintenance");
+    downloadBtn.href = app.apkFile;
+    downloadBtn.setAttribute("download", app.apkFile.split("/").pop());
+    downloadBtn.onclick = (e) => {
+      const currentUser = (typeof getLoggedInUser === "function" ? getLoggedInUser() : null) || { name: "Tetamu", email: "Tidak diketahui" };
+      trackSheetsEvent({
+        type: "download",
+        appName: app.name,
+        appVersion: app.version,
+        fileSize: app.fileSize,
+        userName: currentUser.name,
+        userEmail: currentUser.email,
+        timestamp: new Date().toLocaleString("ms-MY", { timeZone: "Asia/Kuala_Lumpur" })
+      });
+      showToast(`Memulakan muat turun ${app.name} (${app.fileSize})...`);
+    };
+    document.getElementById("modalDownloadText").textContent = `Muat Turun APK (${app.fileSize})`;
+    if (modalQrBtn) modalQrBtn.style.display = "flex";
+    if (modalMaintBanner) modalMaintBanner.style.display = "none";
+  } else {
+    downloadBtn.classList.add("disabled-maintenance");
+    downloadBtn.removeAttribute("href");
+    downloadBtn.removeAttribute("download");
+    downloadBtn.onclick = (e) => {
+      e.preventDefault();
+      showMaintenanceModal(app.id);
+    };
+    document.getElementById("modalDownloadText").textContent = `🔧 Diselenggara untuk Naik Taraf`;
+    if (modalQrBtn) modalQrBtn.style.display = "none";
+    if (modalMaintBanner) {
+      modalMaintBanner.style.display = "flex";
+      const maintTxt = document.getElementById("modalMaintText");
+      if (maintTxt) {
+        maintTxt.textContent = (app && app.maintenanceMessage) ? app.maintenanceMessage : `Aplikasi ${app.name} sedang diselenggara untuk naik taraf. Muat turun fail APK ditutup sementara waktu.`;
+      }
+    }
+  }
 
   document.getElementById("appModal").classList.add("active");
   document.body.style.overflow = "hidden";
@@ -306,6 +348,12 @@ function triggerDownload(appId) {
   const app = APPS_DATA.find(a => a.id === appId);
   if (!app) return;
 
+  // Jika app sedang diselenggara / tidak aktif, sekat muat turun
+  if (app.isOpen === false) {
+    showMaintenanceModal(app.id);
+    return;
+  }
+
   const currentUser = (typeof getLoggedInUser === "function" ? getLoggedInUser() : null) || { name: "Tetamu", email: "Tidak diketahui" };
 
   // Rekod ke Google Sheets secara automatik
@@ -327,6 +375,38 @@ function triggerDownload(appId) {
   document.body.removeChild(link);
 
   showToast(`Memulakan muat turun ${app.name} (${app.fileSize})...`);
+}
+
+// Paparkan Pop-up Penyelenggaraan / Naik Taraf
+function showMaintenanceModal(appId) {
+  const app = APPS_DATA.find(a => a.id === appId);
+  const appName = app ? app.name : "Aplikasi ini";
+  const customMsg = (app && app.maintenanceMessage) ? app.maintenanceMessage : `Aplikasi ${appName} sedang diselenggara untuk naik taraf. Muat turun fail APK ditutup sementara waktu. Sila kembali semula sebentar lagi.`;
+
+  const modal = document.getElementById("maintenanceModal");
+  const title = document.getElementById("maintAppTitle");
+  const desc = document.getElementById("maintAppMessage");
+
+  if (title) title.textContent = `${appName} Sedang Dinaik Taraf`;
+  if (desc) desc.textContent = customMsg;
+  if (modal) {
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeMaintenanceModal() {
+  const modal = document.getElementById("maintenanceModal");
+  if (modal) {
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+}
+
+function closeMaintenanceModalOnBackdrop(e) {
+  if (e.target.id === "maintenanceModal") {
+    closeMaintenanceModal();
+  }
 }
 
 // Hantar data aktiviti ke Google Sheets
