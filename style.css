@@ -1183,6 +1183,60 @@ body {
   margin-bottom: 24px;
 }
 
+/* GOOGLE SSO BUTTON & DIVIDER */
+.auth-method-google {
+  margin-bottom: 12px;
+}
+
+.google-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-google-sso {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #ffffff;
+  color: #1f1f1f;
+  border: 1px solid #dadce0;
+  padding: 13px 20px;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.btn-google-sso:hover {
+  background: #f8f9fa;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--border-light);
+}
+.auth-divider span {
+  padding: 0 12px;
+}
+
 /* REGISTRATION FORM STYLES */
 .auth-form {
   display: flex;
