@@ -272,7 +272,7 @@ const APPS_DATA = [
   {
     id: "kampungwaze",
     name: "KampungWaze",
-    isOpen: false, // Tukar false jika sedang diselenggara
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Navigasi Lorong Desa & Jalan Komuniti Luar Bandar",
     developer: "Atoklure Komuniti",
     category: "navigasi",
