@@ -1,4 +1,4 @@
-// Data Aplikasi Rasmi - Atoklure Apps Store
+﻿// Data Aplikasi Rasmi - Atoklure Apps Store
 // Pengguna boleh tambah, padam atau kemas kini aplikasi di sini dengan mudah.
 
 const STORE_CONFIG = {
@@ -20,7 +20,7 @@ const APPS_DATA = [
   {
     id: "tvkita",
     name: "TV KITA Pro",
-    isOpen: false, // Tukar false jika sedang diselenggara
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Siaran Langsung TV Malaysia & Arkib Hiburan VOD",
     developer: "Atoklure TV",
     category: "hiburan",
@@ -92,7 +92,7 @@ const APPS_DATA = [
   {
     id: "cakapgo",
     name: "CakapGo",
-    isOpen: false, // Tukar false jika sedang diselenggara
+    isOpen: true, // Tukar false jika sedang diselenggara
     subtitle: "Penterjemah Suara Dua Hala & Kamus Frasa Pintar",
     developer: "Atoklure Studio",
     category: "komunikasi",
@@ -272,7 +272,7 @@ const APPS_DATA = [
   {
     id: "kampungwaze",
     name: "KampungWaze",
-    isOpen: true, // Tukar false jika sedang diselenggara
+    isOpen: false, // Tukar false jika sedang diselenggara
     subtitle: "Navigasi Lorong Desa & Jalan Komuniti Luar Bandar",
     developer: "Atoklure Komuniti",
     category: "navigasi",
