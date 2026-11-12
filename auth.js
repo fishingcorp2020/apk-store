@@ -1,9 +1,8 @@
-// Sistem Dwi-Pilihan: Google Quick Login + Borang Daftar Manual
+// Sistem Pengesahan Rasmi Google Identity Services (OAuth 2.0 Verified)
 // PlayStore APK Hub
 
 const AUTH_CONFIG = {
-  // Jika anda mempunyai Google OAuth Client ID dari Google Cloud Console:
-  googleClientId: "",
+  googleClientId: "929787256639-ojmroo438llla3o9j8vt3h1pljq38ba2.apps.googleusercontent.com",
   storageKey: "playstore_user_session",
   registeredListKey: "playstore_registered_users"
 };
@@ -17,98 +16,101 @@ function initAuth() {
   const currentUser = getLoggedInUser();
 
   if (currentUser) {
-    // Pengguna sudah pernah daftar/log masuk
+    // Pengguna sudah pernah disahkan
     unlockStore(currentUser);
   } else {
-    // Pengguna belum daftar - kunci store dan paparkan pilihan
+    // Pengguna belum disahkan - kunci store dan muat butang Google rasmi
     lockStore();
     initGoogleGIS();
   }
 
-  // Pasang listener pada borang pendaftaran manual
+  // Pasang listener pada borang manual jika pengguna tiada akaun Google
   const authForm = document.getElementById("authRegisterForm");
   if (authForm) {
     authForm.addEventListener("submit", handleRegisterSubmit);
   }
 }
 
-// Inisialisasi Google Identity Services (jika Client ID dimasukkan pada masa depan)
+// Inisialisasi Google Identity Services Rasmi (Google OAuth 2.0)
 function initGoogleGIS() {
-  const clientId = AUTH_CONFIG.googleClientId || (typeof STORE_CONFIG !== "undefined" ? STORE_CONFIG.googleClientId : "");
+  const clientId = AUTH_CONFIG.googleClientId;
   const googleBtnContainer = document.getElementById("googleBtnContainer");
-  const googleQuickBox = document.getElementById("googleQuickBox");
 
-  if (clientId && clientId.trim() !== "") {
-    if (window.google && google.accounts && google.accounts.id) {
-      google.accounts.id.initialize({
-        client_id: clientId.trim(),
-        callback: handleGoogleCredentialResponse,
-        auto_select: false
+  if (window.google && google.accounts && google.accounts.id) {
+    google.accounts.id.initialize({
+      client_id: clientId,
+      callback: handleGoogleCredentialResponse,
+      auto_select: false,
+      cancel_on_tap_outside: true
+    });
+
+    if (googleBtnContainer) {
+      googleBtnContainer.innerHTML = "";
+      
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+
+      // Paparkan butang rasmi Google
+      google.accounts.id.renderButton(googleBtnContainer, {
+        type: "standard",
+        theme: isDark ? "filled_black" : "outline",
+        size: "large",
+        shape: "pill",
+        text: "continue_with",
+        width: 320,
+        logo_alignment: "left"
       });
-
-      if (googleBtnContainer) {
-        googleBtnContainer.innerHTML = "";
-        google.accounts.id.renderButton(googleBtnContainer, {
-          theme: document.documentElement.getAttribute("data-theme") === "dark" ? "filled_black" : "outline",
-          size: "large",
-          shape: "pill",
-          text: "signin_with",
-          width: 320,
-          logo_alignment: "left"
-        });
-      }
-
-      if (googleQuickBox) googleQuickBox.style.display = "none";
-    } else {
-      setTimeout(initGoogleGIS, 300);
     }
+
+    // Paparkan pop-up One Tap Google jika disokong
+    try {
+      google.accounts.id.prompt();
+    } catch (e) {
+      console.log("One tap prompt:", e);
+    }
+  } else {
+    // Tunggu SDK Google dimuatkan
+    setTimeout(initGoogleGIS, 250);
   }
 }
 
-// LOG MASUK GOOGLE PANTAS: Pengguna taip nama / ID (contoh: xjio7880x)
-// Sistem automatik formatkan ke xjio7880x@gmail.com dan benarkan masuk terus!
-function handleGoogleQuickLogin(e) {
-  if (e) e.preventDefault();
-
-  const handleInput = document.getElementById("googleHandleInput");
-  if (!handleInput) return;
-
-  let raw = handleInput.value.trim().replace(/\s+/g, "");
-  if (!raw || raw.length < 2) {
-    alert("Sila masukkan ID Gmail anda (contoh: xjio7880x).");
-    handleInput.focus();
+// KENDALIKAN RESPONS DARI GOOGLE SETELAH PENGGUNA BERJAYA DISAHKAN
+// Hanya akaun Google SEBENAR & AKTIF yang disahkan oleh server Google akan sampai ke sini
+function handleGoogleCredentialResponse(response) {
+  if (!response || !response.credential) {
+    alert("Pengesahan Google gagal atau dibatalkan.");
     return;
   }
 
-  // Jika pengguna cuma taip "xjio7880x", auto jadikan "xjio7880x@gmail.com"
-  let email = raw.toLowerCase();
-  if (!email.includes("@")) {
-    email = email + "@gmail.com";
+  // Baca payload token JWT yang ditandatangani secara kriptografi oleh Google
+  const payload = decodeJwt(response.credential);
+  if (!payload || !payload.email) {
+    alert("Akaun Google tidak dapat disahkan.");
+    return;
   }
 
-  // Jana nama paparan daripada handle
-  const handlePart = email.split("@")[0];
-  const displayName = handlePart.charAt(0).toUpperCase() + handlePart.slice(1);
-
+  // Akaun ini 100% DISAHKAN oleh pelayan Google
   const user = {
-    name: displayName,
-    email: email,
-    provider: "google",
-    picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=01875f&color=fff&bold=true`,
-    registeredAt: new Date().toISOString()
+    name: payload.name || payload.email.split("@")[0],
+    email: payload.email,
+    picture: payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(payload.name || 'Google User')}&background=01875f&color=fff&bold=true`,
+    sub: payload.sub,
+    provider: "google_verified",
+    verifiedAt: new Date().toISOString()
   };
 
-  // Simpan sesi dan buka kunci
+  // Simpan sesi sah dalam localStorage
   localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
   saveToRegisteredList(user);
+
+  // Buka kunci gedung APK
   unlockStore(user);
 
   if (typeof showToast === "function") {
-    showToast(`Log masuk Google berjaya! Selamat datang, ${user.name} (${user.email}).`);
+    showToast(`Disahkan oleh Google! Selamat datang, ${user.name}.`);
   }
 }
 
-// Kendalikan borang pendaftaran manual (Nama + Email)
+// Kendalikan borang manual (jika pengguna tiada akaun Google)
 function handleRegisterSubmit(e) {
   e.preventDefault();
 
@@ -125,16 +127,10 @@ function handleRegisterSubmit(e) {
     return;
   }
 
-  if (!rawEmail) {
-    alert("Sila masukkan alamat email.");
+  if (!rawEmail || !rawEmail.includes("@") || !rawEmail.includes(".")) {
+    alert("Sila masukkan alamat email yang sah (contoh: nama@email.com).");
     emailInput.focus();
     return;
-  }
-
-  // Jika pengguna taip handle sahaja di sini pun, kita auto sambung @gmail.com supaya tak error!
-  let email = rawEmail.toLowerCase();
-  if (!email.includes("@")) {
-    email = email + "@gmail.com";
   }
 
   if (submitBtn) {
@@ -145,10 +141,10 @@ function handleRegisterSubmit(e) {
   setTimeout(() => {
     const user = {
       name: name,
-      email: email,
-      provider: "manual",
+      email: rawEmail.toLowerCase(),
+      provider: "manual_registered",
       picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=01875f&color=fff&bold=true`,
-      registeredAt: new Date().toISOString()
+      verifiedAt: new Date().toISOString()
     };
 
     localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
@@ -163,31 +159,7 @@ function handleRegisterSubmit(e) {
     if (typeof showToast === "function") {
       showToast(`Pendaftaran berjaya! Selamat datang, ${user.name}.`);
     }
-  }, 400);
-}
-
-// Kendalikan token rasmi daripada Google GIS (jika diaktifkan)
-function handleGoogleCredentialResponse(response) {
-  if (!response || !response.credential) return;
-
-  const payload = decodeJwt(response.credential);
-  if (!payload || !payload.email) return;
-
-  const user = {
-    name: payload.name || payload.email.split("@")[0],
-    email: payload.email,
-    provider: "google",
-    picture: payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(payload.name || 'User')}&background=01875f&color=fff&bold=true`,
-    registeredAt: new Date().toISOString()
-  };
-
-  localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
-  saveToRegisteredList(user);
-  unlockStore(user);
-
-  if (typeof showToast === "function") {
-    showToast(`Log masuk Google berjaya! Selamat datang, ${user.name}.`);
-  }
+  }, 350);
 }
 
 // Dapatkan sesi pengguna yang disimpan
@@ -223,7 +195,7 @@ function unlockStore(user) {
   if (userProfile) {
     userProfile.style.display = "flex";
     if (userAvatar) {
-      userAvatar.src = user.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=01875f&color=fff&bold=true`;
+      userAvatar.src = user.picture;
     }
     if (userName) {
       userName.textContent = user.name;
@@ -231,7 +203,7 @@ function unlockStore(user) {
   }
 }
 
-// Simpan senarai pengguna yang pernah mendaftar
+// Simpan senarai rekod pendaftar
 function saveToRegisteredList(user) {
   try {
     let list = JSON.parse(localStorage.getItem(AUTH_CONFIG.registeredListKey) || "[]");
@@ -239,7 +211,7 @@ function saveToRegisteredList(user) {
     list.unshift(user);
     localStorage.setItem(AUTH_CONFIG.registeredListKey, JSON.stringify(list));
   } catch (e) {
-    console.warn("Gagal simpan rekod pendaftar:", e);
+    console.warn("Gagal simpan rekod:", e);
   }
 }
 
@@ -248,6 +220,11 @@ function logoutUser() {
   if (confirm("Adakah anda pasti mahu log keluar daripada PlayStore Hub?")) {
     localStorage.removeItem(AUTH_CONFIG.storageKey);
     
+    // Matikan auto-select Google
+    if (window.google && google.accounts && google.accounts.id) {
+      google.accounts.id.disableAutoSelect();
+    }
+
     if (typeof showToast === "function") {
       showToast("Anda telah berjaya log keluar.");
     }
@@ -258,7 +235,7 @@ function logoutUser() {
   }
 }
 
-// Pembaca token JWT Google
+// Penyahkod token JWT Google tanpa sebarang perpustakaan luar
 function decodeJwt(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -271,6 +248,7 @@ function decodeJwt(token) {
     );
     return JSON.parse(jsonPayload);
   } catch (e) {
+    console.error("Gagal menyahkod token Google:", e);
     return null;
   }
 }

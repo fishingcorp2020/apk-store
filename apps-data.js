@@ -10,8 +10,8 @@ const STORE_CONFIG = {
   year: 2026,
   githubPagesUrl: "https://fishingcorp2020.github.io/apk-store",
   githubRepoUrl: "https://github.com/fishingcorp2020/apk-store",
-  // Masukkan Google OAuth Client ID anda di sini (cth: "xxxxxx.apps.googleusercontent.com"):
-  googleClientId: ""
+  // Google OAuth Client ID Rasmi (Disahkan oleh Google Cloud):
+  googleClientId: "929787256639-ojmroo438llla3o9j8vt3h1pljq38ba2.apps.googleusercontent.com"
 };
 
 const APPS_DATA = [

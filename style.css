@@ -1191,6 +1191,8 @@ body {
 .google-btn-wrapper {
   display: flex;
   justify-content: center;
+  min-height: 48px;
+  align-items: center;
 }
 
 .google-quick-box {
