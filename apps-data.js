@@ -92,7 +92,7 @@ const APPS_DATA = [
   {
     id: "cakapgo",
     name: "CakapGo",
-    isOpen: true, // Tukar false jika sedang diselenggara
+    isOpen: false, // Tukar false jika sedang diselenggara
     subtitle: "Penterjemah Suara Dua Hala & Kamus Frasa Pintar",
     developer: "Atoklure Studio",
     category: "komunikasi",
