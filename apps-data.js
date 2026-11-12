@@ -20,7 +20,7 @@ const APPS_DATA = [
   {
     id: "tvkita",
     name: "TV KITA Pro",
-    isOpen: true, // Tukar false jika sedang diselenggara
+    isOpen: false, // Tukar false jika sedang diselenggara
     subtitle: "Siaran Langsung TV Malaysia & Arkib Hiburan VOD",
     developer: "Atoklure TV",
     category: "hiburan",
