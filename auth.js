@@ -231,7 +231,7 @@ function saveToRegisteredList(user) {
 
 // Log Keluar Pengguna
 function logoutUser() {
-  if (confirm("Adakah anda pasti mahu log keluar daripada PlayStore Hub?")) {
+  if (confirm("Adakah anda pasti mahu log keluar daripada Atoklure Apps Store?")) {
     localStorage.removeItem(AUTH_CONFIG.storageKey);
     
     // Matikan auto-select Google

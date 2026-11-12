@@ -1,9 +1,9 @@
-// Data Aplikasi Rasmi - PlayStore APK Hub
+// Data Aplikasi Rasmi - Atoklure Apps Store
 // Pengguna boleh tambah, padam atau kemas kini aplikasi di sini dengan mudah.
 
 const STORE_CONFIG = {
-  storeName: "PlayStore APK Hub",
-  storeTagline: "Pusat Muat Turun Aplikasi Android Bebas & Rasmi",
+  storeName: "Atoklure Apps Store",
+  storeTagline: "Pusat Muat Turun Aplikasi Android Rasmi Atoklure",
   githubUsername: "fishingcorp2020",
   repoName: "apk-store",
   author: "Azizul (FishingCorp / Atoklure)",
