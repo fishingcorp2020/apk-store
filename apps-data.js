@@ -11,7 +11,9 @@ const STORE_CONFIG = {
   githubPagesUrl: "https://fishingcorp2020.github.io/apk-store",
   githubRepoUrl: "https://github.com/fishingcorp2020/apk-store",
   // Google OAuth Client ID Rasmi (Disahkan oleh Google Cloud):
-  googleClientId: "929787256639-ojmroo438llla3o9j8vt3h1pljq38ba2.apps.googleusercontent.com"
+  googleClientId: "929787256639-ojmroo438llla3o9j8vt3h1pljq38ba2.apps.googleusercontent.com",
+  // Google Sheets Apps Script Webhook URL (untuk rekod data user & muat turun):
+  sheetsWebhookUrl: ""
 };
 
 const APPS_DATA = [

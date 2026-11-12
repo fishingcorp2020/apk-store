@@ -201,6 +201,20 @@ function unlockStore(user) {
       userName.textContent = user.name;
     }
   }
+
+  // Hantar rekod log masuk ke Google Sheets (hanya sekali bagi setiap sesi pelayar)
+  if (!sessionStorage.getItem("sheets_tracked_" + user.email)) {
+    sessionStorage.setItem("sheets_tracked_" + user.email, "true");
+    if (typeof trackSheetsEvent === "function") {
+      trackSheetsEvent({
+        type: "login",
+        userName: user.name,
+        userEmail: user.email,
+        provider: user.provider || "google",
+        timestamp: new Date().toLocaleString("ms-MY", { timeZone: "Asia/Kuala_Lumpur" })
+      });
+    }
+  }
 }
 
 // Simpan senarai rekod pendaftar

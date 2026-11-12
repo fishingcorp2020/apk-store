@@ -256,6 +256,16 @@ function openAppModal(appId) {
   downloadBtn.href = app.apkFile;
   downloadBtn.setAttribute("download", app.apkFile.split("/").pop());
   downloadBtn.onclick = (e) => {
+    const currentUser = (typeof getLoggedInUser === "function" ? getLoggedInUser() : null) || { name: "Tetamu", email: "Tidak diketahui" };
+    trackSheetsEvent({
+      type: "download",
+      appName: app.name,
+      appVersion: app.version,
+      fileSize: app.fileSize,
+      userName: currentUser.name,
+      userEmail: currentUser.email,
+      timestamp: new Date().toLocaleString("ms-MY", { timeZone: "Asia/Kuala_Lumpur" })
+    });
     showToast(`Memulakan muat turun ${app.name} (${app.fileSize})...`);
   };
 
@@ -296,6 +306,19 @@ function triggerDownload(appId) {
   const app = APPS_DATA.find(a => a.id === appId);
   if (!app) return;
 
+  const currentUser = (typeof getLoggedInUser === "function" ? getLoggedInUser() : null) || { name: "Tetamu", email: "Tidak diketahui" };
+
+  // Rekod ke Google Sheets secara automatik
+  trackSheetsEvent({
+    type: "download",
+    appName: app.name,
+    appVersion: app.version,
+    fileSize: app.fileSize,
+    userName: currentUser.name,
+    userEmail: currentUser.email,
+    timestamp: new Date().toLocaleString("ms-MY", { timeZone: "Asia/Kuala_Lumpur" })
+  });
+
   const link = document.createElement("a");
   link.href = app.apkFile;
   link.download = app.apkFile.split("/").pop();
@@ -304,6 +327,21 @@ function triggerDownload(appId) {
   document.body.removeChild(link);
 
   showToast(`Memulakan muat turun ${app.name} (${app.fileSize})...`);
+}
+
+// Hantar data aktiviti ke Google Sheets
+function trackSheetsEvent(data) {
+  const url = (typeof STORE_CONFIG !== "undefined" && STORE_CONFIG.sheetsWebhookUrl) ? STORE_CONFIG.sheetsWebhookUrl : "";
+  if (!url || url.trim() === "") return;
+
+  try {
+    fetch(url.trim(), {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(data)
+    }).catch(() => {});
+  } catch (e) {}
 }
 
 // Open QR Code popup for current app or whole store
