@@ -1,8 +1,8 @@
-// Sistem Dwi-Pendaftaran: Google SSO + Borang Manual
+// Sistem Dwi-Pilihan: Google Quick Login + Borang Daftar Manual
 // PlayStore APK Hub
 
 const AUTH_CONFIG = {
-  // Jika anda mempunyai Google OAuth Client ID, masukkan di sini:
+  // Jika anda mempunyai Google OAuth Client ID dari Google Cloud Console:
   googleClientId: "",
   storageKey: "playstore_user_session",
   registeredListKey: "playstore_registered_users"
@@ -22,7 +22,7 @@ function initAuth() {
   } else {
     // Pengguna belum daftar - kunci store dan paparkan pilihan
     lockStore();
-    initGoogleAuth();
+    initGoogleGIS();
   }
 
   // Pasang listener pada borang pendaftaran manual
@@ -32,11 +32,11 @@ function initAuth() {
   }
 }
 
-// Inisialisasi Google Identity Services (jika Client ID wujud)
-function initGoogleAuth() {
+// Inisialisasi Google Identity Services (jika Client ID dimasukkan pada masa depan)
+function initGoogleGIS() {
   const clientId = AUTH_CONFIG.googleClientId || (typeof STORE_CONFIG !== "undefined" ? STORE_CONFIG.googleClientId : "");
   const googleBtnContainer = document.getElementById("googleBtnContainer");
-  const googleCustomBtn = document.getElementById("googleCustomBtn");
+  const googleQuickBox = document.getElementById("googleQuickBox");
 
   if (clientId && clientId.trim() !== "") {
     if (window.google && google.accounts && google.accounts.id) {
@@ -58,86 +58,57 @@ function initGoogleAuth() {
         });
       }
 
-      if (googleCustomBtn) googleCustomBtn.style.display = "none";
+      if (googleQuickBox) googleQuickBox.style.display = "none";
     } else {
-      setTimeout(initGoogleAuth, 300);
+      setTimeout(initGoogleGIS, 300);
     }
-  } else {
-    // Paparkan butang kustom Google SSO
-    if (googleCustomBtn) googleCustomBtn.style.display = "flex";
   }
 }
 
-// Tindakan bila pengguna klik butang Google SSO Kustom
-function triggerGoogleSsoClick() {
-  const clientId = AUTH_CONFIG.googleClientId || (typeof STORE_CONFIG !== "undefined" ? STORE_CONFIG.googleClientId : "");
+// LOG MASUK GOOGLE PANTAS: Pengguna taip nama / ID (contoh: xjio7880x)
+// Sistem automatik formatkan ke xjio7880x@gmail.com dan benarkan masuk terus!
+function handleGoogleQuickLogin(e) {
+  if (e) e.preventDefault();
 
-  if (clientId && clientId.trim() !== "" && window.google && google.accounts) {
-    google.accounts.id.prompt();
+  const handleInput = document.getElementById("googleHandleInput");
+  if (!handleInput) return;
+
+  let raw = handleInput.value.trim().replace(/\s+/g, "");
+  if (!raw || raw.length < 2) {
+    alert("Sila masukkan ID Gmail anda (contoh: xjio7880x).");
+    handleInput.focus();
     return;
   }
 
-  // Jika Client ID belum dihubungkan, mudahkan pengguna dengan log masuk pantas Gmail
-  const emailInput = prompt("Log Masuk Google Pantas:\nMasukkan alamat Gmail anda (contoh: user@gmail.com):", "");
-  if (!emailInput) return;
-
-  const emailClean = emailInput.trim().toLowerCase();
-  if (!emailClean.includes("@") || !emailClean.includes(".")) {
-    alert("Sila masukkan alamat Gmail yang sah.");
-    return;
+  // Jika pengguna cuma taip "xjio7880x", auto jadikan "xjio7880x@gmail.com"
+  let email = raw.toLowerCase();
+  if (!email.includes("@")) {
+    email = email + "@gmail.com";
   }
 
-  const namePart = emailClean.split("@")[0];
-  const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+  // Jana nama paparan daripada handle
+  const handlePart = email.split("@")[0];
+  const displayName = handlePart.charAt(0).toUpperCase() + handlePart.slice(1);
 
   const user = {
-    name: formattedName,
-    email: emailClean,
+    name: displayName,
+    email: email,
     provider: "google",
-    picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(formattedName)}&background=01875f&color=fff&bold=true`,
+    picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=01875f&color=fff&bold=true`,
     registeredAt: new Date().toISOString()
   };
 
+  // Simpan sesi dan buka kunci
   localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
   saveToRegisteredList(user);
   unlockStore(user);
 
   if (typeof showToast === "function") {
-    showToast(`Log masuk Google berjaya! Selamat datang, ${user.name}.`);
+    showToast(`Log masuk Google berjaya! Selamat datang, ${user.name} (${user.email}).`);
   }
 }
 
-// Kendalikan token rasmi daripada Google
-function handleGoogleCredentialResponse(response) {
-  if (!response || !response.credential) {
-    alert("Gagal menerima maklumat akaun Google.");
-    return;
-  }
-
-  const payload = decodeJwt(response.credential);
-  if (!payload || !payload.email) {
-    alert("Pengesahan token Google gagal.");
-    return;
-  }
-
-  const user = {
-    name: payload.name || payload.email.split("@")[0],
-    email: payload.email,
-    provider: "google",
-    picture: payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(payload.name || 'User')}&background=01875f&color=fff&bold=true`,
-    registeredAt: new Date().toISOString()
-  };
-
-  localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
-  saveToRegisteredList(user);
-  unlockStore(user);
-
-  if (typeof showToast === "function") {
-    showToast(`Log masuk Google berjaya! Selamat datang, ${user.name}.`);
-  }
-}
-
-// Kendalikan borang pendaftaran manual
+// Kendalikan borang pendaftaran manual (Nama + Email)
 function handleRegisterSubmit(e) {
   e.preventDefault();
 
@@ -146,7 +117,7 @@ function handleRegisterSubmit(e) {
   const submitBtn = document.getElementById("regSubmitBtn");
 
   const name = nameInput.value.trim();
-  const email = emailInput.value.trim().toLowerCase();
+  let rawEmail = emailInput.value.trim().replace(/\s+/g, "");
 
   if (!name || name.length < 2) {
     alert("Sila masukkan nama anda.");
@@ -154,10 +125,16 @@ function handleRegisterSubmit(e) {
     return;
   }
 
-  if (!email || !email.includes("@") || !email.includes(".")) {
-    alert("Sila masukkan alamat email yang sah.");
+  if (!rawEmail) {
+    alert("Sila masukkan alamat email.");
     emailInput.focus();
     return;
+  }
+
+  // Jika pengguna taip handle sahaja di sini pun, kita auto sambung @gmail.com supaya tak error!
+  let email = rawEmail.toLowerCase();
+  if (!email.includes("@")) {
+    email = email + "@gmail.com";
   }
 
   if (submitBtn) {
@@ -187,6 +164,30 @@ function handleRegisterSubmit(e) {
       showToast(`Pendaftaran berjaya! Selamat datang, ${user.name}.`);
     }
   }, 400);
+}
+
+// Kendalikan token rasmi daripada Google GIS (jika diaktifkan)
+function handleGoogleCredentialResponse(response) {
+  if (!response || !response.credential) return;
+
+  const payload = decodeJwt(response.credential);
+  if (!payload || !payload.email) return;
+
+  const user = {
+    name: payload.name || payload.email.split("@")[0],
+    email: payload.email,
+    provider: "google",
+    picture: payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(payload.name || 'User')}&background=01875f&color=fff&bold=true`,
+    registeredAt: new Date().toISOString()
+  };
+
+  localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
+  saveToRegisteredList(user);
+  unlockStore(user);
+
+  if (typeof showToast === "function") {
+    showToast(`Log masuk Google berjaya! Selamat datang, ${user.name}.`);
+  }
 }
 
 // Dapatkan sesi pengguna yang disimpan
@@ -270,7 +271,6 @@ function decodeJwt(token) {
     );
     return JSON.parse(jsonPayload);
   } catch (e) {
-    console.error("Gagal membaca token Google:", e);
     return null;
   }
 }
