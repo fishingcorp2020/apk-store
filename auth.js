@@ -1,12 +1,9 @@
-// Google Single Sign-On (GIS) Authentication Module for PlayStore APK Hub
+// Sistem Pendaftaran & Log Masuk Pantas (Tanpa Perlu Google Cloud)
+// PlayStore APK Hub
 
 const AUTH_CONFIG = {
-  // Masukkan Google OAuth Client ID anda dari Google Cloud Console di sini:
-  // Contoh: "1234567890-abcdefg.apps.googleusercontent.com"
-  googleClientId: "", 
-  
-  // Kunci simpanan session di browser
-  storageKey: "playstore_user_session"
+  storageKey: "playstore_user_session",
+  registeredListKey: "playstore_registered_users"
 };
 
 // Semak status log masuk bila laman dibuka
@@ -14,21 +11,25 @@ document.addEventListener("DOMContentLoaded", () => {
   initAuth();
 });
 
-// Mulakan sistem Auth
 function initAuth() {
   const currentUser = getLoggedInUser();
 
   if (currentUser) {
-    // Pengguna sudah log masuk
+    // Pengguna sudah pernah daftar/log masuk
     unlockStore(currentUser);
   } else {
-    // Pengguna belum log masuk - kunci store
+    // Pengguna belum daftar - kunci store dan tunjuk borang
     lockStore();
-    setupGoogleSignInButton();
+  }
+
+  // Pasang listener pada borang pendaftaran
+  const authForm = document.getElementById("authRegisterForm");
+  if (authForm) {
+    authForm.addEventListener("submit", handleRegisterSubmit);
   }
 }
 
-// Dapatkan maklumat pengguna yang disimpan
+// Dapatkan sesi pengguna yang disimpan
 function getLoggedInUser() {
   try {
     const data = localStorage.getItem(AUTH_CONFIG.storageKey);
@@ -60,136 +61,99 @@ function unlockStore(user) {
 
   if (userProfile) {
     userProfile.style.display = "flex";
-    if (userAvatar && user.picture) userAvatar.src = user.picture;
-    if (userName) userName.textContent = user.name || user.email.split("@")[0];
-  }
-}
-
-// Sediakan Butang Sign-In Google
-function setupGoogleSignInButton() {
-  const clientId = AUTH_CONFIG.googleClientId || (typeof STORE_CONFIG !== "undefined" ? STORE_CONFIG.googleClientId : "");
-  const googleBtnContainer = document.getElementById("googleBtnContainer");
-  const demoBtn = document.getElementById("demoSignInBtn");
-
-  if (clientId && clientId.trim() !== "") {
-    // Guna Google Identity Services yang rasmi
-    if (window.google && google.accounts && google.accounts.id) {
-      google.accounts.id.initialize({
-        client_id: clientId.trim(),
-        callback: handleGoogleCredentialResponse,
-        auto_select: false
-      });
-
-      googleBtnContainer.innerHTML = "";
-      google.accounts.id.renderButton(googleBtnContainer, {
-        theme: document.documentElement.getAttribute("data-theme") === "dark" ? "filled_black" : "outline",
-        size: "large",
-        shape: "pill",
-        text: "signin_with",
-        width: 280,
-        logo_alignment: "left"
-      });
-    } else {
-      // Tunggu SDK Google dimuatkan
-      setTimeout(setupGoogleSignInButton, 300);
+    if (userAvatar) {
+      userAvatar.src = user.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=01875f&color=fff&bold=true`;
     }
-  } else {
-    // Jika Client ID belum dimasukkan, tunjukkan butang panduan & demo
-    if (demoBtn) demoBtn.style.display = "flex";
+    if (userName) {
+      userName.textContent = user.name;
+    }
   }
 }
 
-// Kendalikan respon token selepas pengguna log masuk dengan Google
-function handleGoogleCredentialResponse(response) {
-  if (!response || !response.credential) {
-    showToast("Gagal menerima maklumat akaun Google.");
+// Kendalikan penghantaran borang pendaftaran
+function handleRegisterSubmit(e) {
+  e.preventDefault();
+
+  const nameInput = document.getElementById("regUserName");
+  const emailInput = document.getElementById("regUserEmail");
+  const submitBtn = document.getElementById("regSubmitBtn");
+
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim().toLowerCase();
+
+  if (!name || name.length < 2) {
+    alert("Sila masukkan nama anda.");
+    nameInput.focus();
     return;
   }
 
-  const payload = decodeJwt(response.credential);
-  if (!payload || !payload.email) {
-    showToast("Pengesahan Google gagal.");
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    alert("Sila masukkan alamat email yang sah (contoh: nama@gmail.com).");
+    emailInput.focus();
     return;
   }
 
-  const user = {
-    sub: payload.sub,
-    email: payload.email,
-    name: payload.name || payload.email.split("@")[0],
-    picture: payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(payload.name || 'User')}&background=01875f&color=fff`,
-    loginAt: new Date().toISOString()
-  };
+  // Tunjukkan loading pada butang
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `<span>Mendaftarkan...</span>`;
+  }
 
-  // Simpan dalam localStorage
-  localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
+  setTimeout(() => {
+    // Cipta objek pengguna
+    const user = {
+      name: name,
+      email: email,
+      picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=01875f&color=fff&bold=true`,
+      registeredAt: new Date().toISOString()
+    };
 
-  unlockStore(user);
-  showToast(`Selamat datang, ${user.name}! Akses penuh dibuka.`);
+    // Simpan sesi aktif dalam localStorage
+    localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
+
+    // Simpan juga dalam senarai rekod pendaftar tempatan
+    saveToRegisteredList(user);
+
+    // Buka kunci gedung APK
+    unlockStore(user);
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<span>Daftar & Masuk</span>`;
+    }
+
+    if (typeof showToast === "function") {
+      showToast(`Pendaftaran berjaya! Selamat datang, ${user.name}.`);
+    } else {
+      alert(`Selamat datang, ${user.name}!`);
+    }
+  }, 400);
+}
+
+// Simpan senarai pengguna yang pernah mendaftar
+function saveToRegisteredList(user) {
+  try {
+    let list = JSON.parse(localStorage.getItem(AUTH_CONFIG.registeredListKey) || "[]");
+    // Elak duplikasi email
+    list = list.filter(item => item.email !== user.email);
+    list.unshift(user);
+    localStorage.setItem(AUTH_CONFIG.registeredListKey, JSON.stringify(list));
+  } catch (e) {
+    console.warn("Gagal simpan rekod pendaftar:", e);
+  }
 }
 
 // Log Keluar Pengguna
 function logoutUser() {
-  if (confirm("Adakah anda pasti mahu log keluar?")) {
+  if (confirm("Adakah anda pasti mahu log keluar daripada PlayStore Hub?")) {
     localStorage.removeItem(AUTH_CONFIG.storageKey);
-    showToast("Anda telah berjaya log keluar.");
     
-    // Muat semula halaman untuk mengunci kembali
+    if (typeof showToast === "function") {
+      showToast("Anda telah berjaya log keluar.");
+    }
+    
     setTimeout(() => {
       window.location.reload();
-    }, 400);
-  }
-}
-
-// Log Masuk Demo / Ujian Sementara (sebelum user setup Google Client ID rasmi)
-function triggerDemoLogin() {
-  const emailInput = prompt("Masukkan email Gmail anda untuk mendaftar masuk (Ujian):", "user@gmail.com");
-  if (!emailInput || !emailInput.includes("@")) {
-    if (emailInput !== null) alert("Sila masukkan format email yang sah.");
-    return;
-  }
-
-  const namePart = emailInput.split("@")[0];
-  const user = {
-    sub: "demo_" + Date.now(),
-    email: emailInput,
-    name: namePart.charAt(0).toUpperCase() + namePart.slice(1),
-    picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(namePart)}&background=01875f&color=fff`,
-    loginAt: new Date().toISOString()
-  };
-
-  localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(user));
-  unlockStore(user);
-  showToast(`Selamat datang, ${user.name}!`);
-}
-
-// Buka Panduan Cara Dapatkan Google Client ID
-function openGoogleClientIdGuide() {
-  alert(
-    "Langkah Mudah Dapatkan Google Client ID Percuma (2 Minit):\n\n" +
-    "1. Buka https://console.cloud.google.com/apis/credentials\n" +
-    "2. Cipta projek baru (cth: 'PlayStore APK Hub')\n" +
-    "3. Di menu Credentials -> Klik '+ CREATE CREDENTIALS' -> Pilih 'OAuth client ID'\n" +
-    "4. Application type: Pilih 'Web application'\n" +
-    "5. Authorized JavaScript origins: Masukkan link GitHub anda:\n" +
-    "   https://fishingcorp2020.github.io\n" +
-    "6. Salin Client ID yang diberikan dan tampal ke dalam fail 'auth.js' di baris googleClientId!"
-  );
-}
-
-// Pembaca token JWT Google tanpa library luar
-function decodeJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
-  } catch (e) {
-    console.error("Gagal membaca token Google:", e);
-    return null;
+    }, 300);
   }
 }

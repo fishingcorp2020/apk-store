@@ -1183,36 +1183,88 @@ body {
   margin-bottom: 24px;
 }
 
-.google-btn-wrapper {
+/* REGISTRATION FORM STYLES */
+.auth-form {
   display: flex;
-  justify-content: center;
-  margin: 20px 0;
-  min-height: 44px;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+  margin-bottom: 20px;
 }
 
-.btn-demo-auth {
-  display: inline-flex;
+.auth-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.auth-input {
+  width: 100%;
+  background: var(--surface-variant);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px 12px 42px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-main);
+  outline: none;
+  transition: var(--transition);
+}
+
+.auth-input:focus {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.btn-register-submit {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 13px 20px;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  background: #ffffff;
-  color: #1f1f1f;
-  border: 1px solid #dadce0;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  font-size: 0.92rem;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto 12px;
+  gap: 8px;
+  margin-top: 6px;
+  box-shadow: 0 2px 8px rgba(1, 135, 95, 0.3);
   transition: var(--transition);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-.btn-demo-auth:hover {
-  background: #f8f9fa;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+
+.btn-register-submit:hover {
+  background: var(--primary-hover);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(1, 135, 95, 0.4);
+}
+
+.btn-register-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .auth-perks {
