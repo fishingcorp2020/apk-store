@@ -13,7 +13,10 @@ const STORE_CONFIG = {
   // Google OAuth Client ID Rasmi (Disahkan oleh Google Cloud):
   googleClientId: "929787256639-ojmroo438llla3o9j8vt3h1pljq38ba2.apps.googleusercontent.com",
   // Google Sheets Apps Script Webhook URL (untuk rekod data user & muat turun):
-  sheetsWebhookUrl: "https://script.google.com/macros/s/AKfycbzaf0ZJnLfJKw-wMOKyEji1Qqb9aW9t4aS0iQkCUljVHlel_Dhr6YW6hN5MTxAz0DWa/exec"
+  sheetsWebhookUrl: "https://script.google.com/macros/s/AKfycbzaf0ZJnLfJKw-wMOKyEji1Qqb9aW9t4aS0iQkCUljVHlel_Dhr6YW6hN5MTxAz0DWa/exec",
+  // Konfigurasi Supabase Database:
+  supabaseUrl: "https://jdbrqyhuckmuvjxtqnxe.supabase.co",
+  supabaseKey: "sb_publishable_vJC_fF89eBE-rgqXLn7tIg_Ngq0QnI7"
 };
 
 const APPS_DATA = [

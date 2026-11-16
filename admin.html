@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin - Atoklure Apps Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-2: #334155;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #01875f;
+      --primary-hover: #059669;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+    /* LOGIN SCREEN */
+    .login-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .login-card h1 { font-size: 1.35rem; margin-bottom: 6px; }
+    .login-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 22px; line-height: 1.5; }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.92rem;
+      font-family: inherit;
+    }
+    .form-control:focus { outline: none; border-color: var(--primary); }
+    textarea.form-control { min-height: 80px; resize: vertical; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.15s;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: var(--surface-2); color: var(--text); }
+    .btn-secondary:hover { background: #475569; }
+    .btn-danger { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .btn-danger:hover { background: var(--red); color: #fff; }
+    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+
+    /* HEADER */
+    .admin-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .admin-header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; }
+    .brand span { color: #34d399; }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 6px; }
+    .stat-val { font-size: 1.6rem; font-weight: 700; }
+
+    /* TABS */
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+    .tab-group { display: flex; gap: 8px; }
+    .tab-btn {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* APPS LIST */
+    .apps-list { display: flex; flex-direction: column; gap: 12px; }
+    .admin-app-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .admin-app-row.is-closed { border-color: rgba(245,158,11,0.45); }
+    .app-left { display: flex; align-items: center; gap: 12px; min-width: 240px; flex: 1; }
+    .app-left img { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; background: var(--bg); }
+    .app-name { font-weight: 700; font-size: 1rem; }
+    .app-meta { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+    .app-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+    /* TOGGLE SWITCH */
+    .switch-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #b45309; transition: .25s; border-radius: 26px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
+      background-color: white; transition: .25s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(22px); }
+    .status-pill {
+      font-size: 0.75rem; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+      min-width: 92px; text-align: center;
+    }
+    .status-pill.open { background: rgba(1,135,95,0.2); color: #34d399; }
+    .status-pill.closed { background: rgba(245,158,11,0.2); color: #fbbf24; }
+
+    /* LOGS TABLE */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: rgba(0,0,0,0.2); color: var(--muted); font-weight: 600; font-size: 0.76rem; text-transform: uppercase; }
+    tr:last-child td { border-bottom: none; }
+    .badge-type { padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+    .badge-download { background: rgba(1,135,95,0.2); color: #34d399; }
+    .badge-login { background: rgba(59,130,246,0.2); color: #60a5fa; }
+
+    /* MODAL */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      z-index: 50; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-backdrop.active { display: flex; }
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 660px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+    }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .upload-row { display: flex; gap: 8px; align-items: center; }
+    .toast {
+      position: fixed; bottom: 20px; right: 20px; background: #0f172a; border: 1px solid var(--primary);
+      color: #fff; padding: 12px 18px; border-radius: 10px; font-size: 0.88rem; z-index: 100;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none;
+    }
+    .toast.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. LOGIN VIEW -->
+  <div id="loginView" class="login-wrap">
+    <div class="login-card">
+      <h1>🔐 Panel Admin Store</h1>
+      <p>Log masuk menggunakan akaun Admin yang didaftarkan di <strong>Supabase Authentication</strong> untuk mengurus aplikasi.</p>
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <label>Email Admin</label>
+          <input type="email" id="loginEmail" class="form-control" placeholder="admin@gmail.com" required>
+        </div>
+        <div class="form-group">
+          <label>Kata Laluan</label>
+          <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+        </div>
+        <div id="loginError" style="color:#f87171; font-size:0.82rem; margin-bottom:12px; display:none;"></div>
+        <button type="submit" id="loginBtn" class="btn btn-primary" style="width:100%;">Log Masuk Admin</button>
+      </form>
+      <div style="margin-top:16px; text-align:center;">
+        <a href="index.html" style="color:var(--muted); font-size:0.82rem; text-decoration:none;">← Kembali ke Atoklure Apps Store</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. DASHBOARD VIEW -->
+  <div id="dashboardView" style="display:none;">
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <div class="brand">
+          ⚙️ <span>Atoklure</span> Panel Admin
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span id="adminUserEmail" style="font-size:0.8rem; color:var(--muted);"></span>
+          <a href="index.html" class="btn btn-secondary btn-sm">Lihat Store</a>
+          <button onclick="adminLogout()" class="btn btn-danger btn-sm">Log Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Jumlah Aplikasi</div>
+          <div id="statTotal" class="stat-val">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Aktif (Dibuka)</div>
+          <div id="statOpen" class="stat-val" style="color:#34d399;">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Naik Taraf (Ditutup)</div>
+          <div id="statClosed" class="stat-val" style="color:#fbbf24;">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Log Aktiviti Terkini</div>
+          <div id="statLogs" class="stat-val">0</div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <div class="tab-group">
+          <button class="tab-btn active" id="tabAppsBtn" onclick="switchTab('apps')">📱 Kawalan Aplikasi</button>
+          <button class="tab-btn" id="tabLogsBtn" onclick="switchTab('logs')">📊 Log Pengguna & Muat Turun</button>
+        </div>
+        <button class="btn btn-primary" onclick="openAppFormModal()">+ Tambah App Baru</button>
+      </div>
+
+      <!-- TAB 1: APPS -->
+      <div id="tabApps">
+        <div id="adminAppsList" class="apps-list"></div>
+      </div>
+
+      <!-- TAB 2: LOGS -->
+      <div id="tabLogs" style="display:none;">
+        <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="loadActivityLogs()">🔄 Muat Semula Log</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Masa</th>
+                <th>Aktiviti</th>
+                <th>Aplikasi</th>
+                <th>Nama Pengguna</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody id="logsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL TAMBAH / EDIT APP -->
+  <div id="appFormModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2 id="formModalTitle" style="font-size:1.15rem;">Tambah Aplikasi Baru</h2>
+        <button class="btn btn-secondary btn-sm" onclick="closeAppFormModal()">✕ Tutup</button>
+      </div>
+      <form id="appForm">
+        <input type="hidden" id="editMode" value="create">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ID Unik (huruf kecil tanpa jarak) *</label>
+            <input type="text" id="fId" class="form-control" placeholder="cth: mynewapp" required>
+          </div>
+          <div class="form-group">
+            <label>Nama Aplikasi *</label>
+            <input type="text" id="fName" class="form-control" placeholder="cth: My New App" required>
+          </div>
+          <div class="form-group">
+            <label>Keterangan Ringkas (Subtitle)</label>
+            <input type="text" id="fSubtitle" class="form-control" placeholder="cth: Aplikasi pintar serba guna">
+          </div>
+          <div class="form-group">
+            <label>Pembangun (Developer)</label>
+            <input type="text" id="fDeveloper" class="form-control" value="Atoklure Studio">
+          </div>
+          <div class="form-group">
+            <label>Kategori</label>
+            <select id="fCategory" class="form-control">
+              <option value="hiburan">Hiburan & TV</option>
+              <option value="navigasi">Navigasi & GPS</option>
+              <option value="komunikasi">Komunikasi & Bahasa</option>
+              <option value="utiliti">Utiliti & Kamera</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Label Kategori</label>
+            <input type="text" id="fCategoryName" class="form-control" value="Utiliti & Alat">
+          </div>
+          <div class="form-group">
+            <label>Versi</label>
+            <input type="text" id="fVersion" class="form-control" value="v1.0.0">
+          </div>
+          <div class="form-group">
+            <label>Saiz Fail</label>
+            <input type="text" id="fFileSize" class="form-control" value="5.0 MB">
+          </div>
+          <div class="form-group">
+            <label>Lencana (Badge)</label>
+            <input type="text" id="fBadge" class="form-control" placeholder="cth: Terkini / Popular">
+          </div>
+          <div class="form-group">
+            <label>Susunan (Sort Order)</label>
+            <input type="number" id="fSortOrder" class="form-control" value="9">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Pautan Gambar Ikon (atau Upload terus ke Supabase)</label>
+          <div class="upload-row">
+            <input type="text" id="fIcon" class="form-control" placeholder="assets/icons/nama.png atau URL">
+            <label class="btn btn-secondary btn-sm" style="white-space:nowrap;">
+              📤 Upload Ikon
+              <input type="file" id="uploadIconInput" accept="image/*" style="display:none;" onchange="handleFileUpload(this, 'icons', 'fIcon')">
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Pautan Fail APK (atau Upload terus ke Supabase, maks 50MB)</label>
+          <div class="upload-row">
+            <input type="text" id="fApkFile" class="form-control" placeholder="apks/NamaApp_v1.0.apk atau URL">
+            <label class="btn btn-secondary btn-sm" style="white-space:nowrap;">
+              📤 Upload APK
+              <input type="file" id="uploadApkInput" accept=".apk" style="display:none;" onchange="handleFileUpload(this, 'apks', 'fApkFile', 'fFileSize')">
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Penerangan Penuh</label>
+          <textarea id="fDescription" class="form-control" placeholder="Terangkan kelebihan dan fungsi aplikasi..."></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Kelebihan Utama (1 baris setiap poin)</label>
+            <textarea id="fHighlights" class="form-control" placeholder="Laju dan ringan&#10;Percuma 100%"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Ciri-Ciri Utama (1 baris setiap poin)</label>
+            <textarea id="fFeatures" class="form-control" placeholder="🚀 Pantas: Penstriman lancar&#10;🔒 Selamat: Tiada iklan"></textarea>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Apa yang Baharu</label>
+            <input type="text" id="fWhatsNew" class="form-control" value="Versi 1.0: Pelancaran rasmi pertama.">
+          </div>
+          <div class="form-group">
+            <label>Keperluan Android</label>
+            <input type="text" id="fMinAndroid" class="form-control" value="Android 6.0+">
+          </div>
+          <div class="form-group">
+            <label>Nama Pakej (Package Name)</label>
+            <input type="text" id="fPackageName" class="form-control" placeholder="com.atoklure.app">
+          </div>
+        </div>
+
+        <div style="display:flex; gap:20px; margin: 12px 0 20px;">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem;">
+            <input type="checkbox" id="fIsOpen" checked> <strong>Aktif & Boleh Dimuat Turun</strong>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem;">
+            <input type="checkbox" id="fFeatured"> Papar di Banner Atas (Featured)
+          </label>
+        </div>
+
+        <div style="display:flex; gap:10px; justify-content:flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="closeAppFormModal()">Batal</button>
+          <button type="submit" id="saveAppBtn" class="btn btn-primary">💾 Simpan ke Database</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="apps-data.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

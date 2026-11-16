@@ -11,7 +11,20 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCatalog();
   setupEventListeners();
   checkUrlHash();
+  syncAppsWithSupabase();
 });
+
+// Segerak senarai aplikasi & status terkini dari Supabase Database
+async function syncAppsWithSupabase() {
+  if (typeof fetchAppsFromSupabase !== "function") return;
+  const remoteApps = await fetchAppsFromSupabase();
+  if (remoteApps && remoteApps.length > 0) {
+    APPS_DATA.splice(0, APPS_DATA.length, ...remoteApps);
+    renderHeroSlider();
+    renderCatalog();
+    checkUrlHash();
+  }
+}
 
 // Setup event listeners
 function setupEventListeners() {
@@ -409,8 +422,12 @@ function closeMaintenanceModalOnBackdrop(e) {
   }
 }
 
-// Hantar data aktiviti ke Google Sheets
+// Hantar data aktiviti ke Google Sheets & Supabase
 function trackSheetsEvent(data) {
+  if (typeof logActivityToSupabase === "function") {
+    logActivityToSupabase(data);
+  }
+
   const url = (typeof STORE_CONFIG !== "undefined" && STORE_CONFIG.sheetsWebhookUrl) ? STORE_CONFIG.sheetsWebhookUrl : "";
   if (!url || url.trim() === "") return;
 
