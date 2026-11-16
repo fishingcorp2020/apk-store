@@ -1550,3 +1550,29 @@ body {
   background: #d97706;
   color: #ffffff;
 }
+
+/* Butang pintas Admin di penjuru atas kanan skrin kunci (Auth Overlay) */
+.auth-admin-corner-btn {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: var(--transition);
+  z-index: 10;
+}
+.auth-admin-corner-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
