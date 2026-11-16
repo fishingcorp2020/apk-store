@@ -24,16 +24,28 @@ try {
 
 $content = [System.IO.File]::ReadAllText($appsFile, [System.Text.Encoding]::UTF8)
 
-$appsList = @(
-    @{ id = "tvkita"; name = "TV KITA Pro"; category = "Hiburan & TV" },
-    @{ id = "jetinav"; name = "JetiNav All-Terrain"; category = "Navigasi & GPS" },
-    @{ id = "cakapgo"; name = "CakapGo"; category = "Komunikasi & Bahasa" },
-    @{ id = "daebaktv"; name = "Daebak TV (대박 TV)"; category = "Hiburan & Video" },
-    @{ id = "stickerkilat"; name = "StickerKilat"; category = "Fotografi & Seni" },
-    @{ id = "sembangoffline"; name = "Sembang Offline"; category = "Komunikasi & Suara" },
-    @{ id = "smartbulbcctv"; name = "SmartBulb CCTV Pro"; category = "Keselamatan & CCTV" },
-    @{ id = "kampungwaze"; name = "KampungWaze"; category = "Navigasi & GPS" }
-)
+# Dapatkan senarai app secara dinamik dari apps-data.js
+$appsList = @()
+try {
+    $nodeCmd = 'const fs = require("fs"); const code = fs.readFileSync("apps-data.js","utf8"); eval(code.replace("const STORE_CONFIG", "var STORE_CONFIG").replace("const APPS_DATA", "var APPS_DATA")); console.log(JSON.stringify(APPS_DATA.map(a => ({ id: a.id, name: a.name, category: a.categoryName || a.category, isOpen: a.isOpen !== false }))));'
+    $appsJson = node -e $nodeCmd 2>$null
+    if ($appsJson) {
+        $appsList = $appsJson | ConvertFrom-Json
+    }
+} catch {}
+
+if (-not $appsList -or $appsList.Count -eq 0) {
+    $appsList = @(
+        @{ id = "tvkita"; name = "TV KITA Pro"; category = "Hiburan & TV"; isOpen = $true },
+        @{ id = "jetinav"; name = "JetiNav All-Terrain"; category = "Navigasi & GPS"; isOpen = $true },
+        @{ id = "cakapgo"; name = "CakapGo"; category = "Komunikasi & Bahasa"; isOpen = $true },
+        @{ id = "daebaktv"; name = "Daebak TV (대박 TV)"; category = "Hiburan & Video"; isOpen = $true },
+        @{ id = "stickerkilat"; name = "StickerKilat"; category = "Fotografi & Seni"; isOpen = $true },
+        @{ id = "sembangoffline"; name = "Sembang Offline"; category = "Komunikasi & Suara"; isOpen = $true },
+        @{ id = "smartbulbcctv"; name = "SmartBulb CCTV Pro"; category = "Keselamatan & CCTV"; isOpen = $true },
+        @{ id = "kampungwaze"; name = "KampungWaze"; category = "Navigasi & GPS"; isOpen = $true }
+    )
+}
 
 # Cipta Tingkap Utama (Form)
 $form = New-Object System.Windows.Forms.Form
@@ -53,7 +65,7 @@ $headerPanel.BackColor = [System.Drawing.Color]::FromArgb(1, 135, 95)
 $form.Controls.Add($headerPanel)
 
 $headerTitle = New-Object System.Windows.Forms.Label
-$headerTitle.Text = "⚙️ Kawalan Status 8 Aplikasi"
+$headerTitle.Text = "⚙️ Kawalan Status ($($appsList.Count) Aplikasi)"
 $headerTitle.Font = New-Object System.Drawing.Font("Segoe UI", 13, [System.Drawing.FontStyle]::Bold)
 $headerTitle.ForeColor = [System.Drawing.Color]::White
 $headerTitle.Location = New-Object System.Drawing.Point(20, 14)
@@ -74,6 +86,7 @@ $listPanel.Location = New-Object System.Drawing.Point(20, 92)
 $listPanel.Size = New-Object System.Drawing.Size(455, 385)
 $listPanel.BackColor = [System.Drawing.Color]::White
 $listPanel.BorderStyle = "FixedSingle"
+$listPanel.AutoScroll = $true
 $form.Controls.Add($listPanel)
 
 $checkboxes = @()
