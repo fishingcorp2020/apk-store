@@ -307,5 +307,41 @@ const APPS_DATA = [
     whatsNew: "Versi 1.0 pelancaran sulung peta laluan desa Malaysia.",
     minAndroid: "Android 6.0 (Marshmallow)+",
     packageName: "com.atoklure.kampungwaze"
+  },
+  {
+    id: "kampungremotetv",
+    name: "Kampung Remote TV",
+    isOpen: true,
+    subtitle: "Alat Kawalan Jauh Universal Android TV, Google TV & Caixun",
+    developer: "Atoklure Smart Home",
+    category: "hiburan",
+    categoryName: "Hiburan & TV",
+    version: "v3.0.0",
+    fileSize: "20.5 MB",
+    rating: 4.9,
+    reviews: "1.2k",
+    downloads: "5,000+",
+    ageRating: "3+",
+    icon: "assets/icons/kampungremotetv.svg",
+    apkFile: "apks/KampungRemoteTV_v3.0.apk",
+    badge: "Smart TV",
+    featured: true,
+    bannerColor: "linear-gradient(135deg, #080B12 0%, #438BFF 100%)",
+    description: "Kampung Remote TV ialah aplikasi alat kawalan jauh universal untuk Caixun, Smarttech/AiPlus, TCL, Xiaomi, Sony dan pelbagai Android TV / Google TV melalui Wi-Fi tempatan tanpa iklan dan tanpa ADB. Menyokong pad arah D-Pad, mod Touchpad isyarat sentuhan, papan kekunci TV selamat (TLS), pengesanan pelbagai jenama/model, serta sokongan UPnP/DLNA.",
+    highlights: [
+      "Sokongan Android TV Remote v2 (TLS & PIN 6-Aksara Selamat)",
+      "Pilihan Jenama & Model TV (Caixun, Smarttech/AiPlus, TCL, Sony, dll.)",
+      "Mod Alat Kawalan, Pad Sentuh (Touchpad) & Papan Kekunci TV",
+      "Sokongan Dwi-Bahasa: Bahasa Melayu & English"
+    ],
+    features: [
+      "📡 Imbasan Wi-Fi Automatik (NSD & SSDP): Kesan TV dalam rangkaian secara automatik atau sambung melalui IP manual.",
+      "🔐 Keselamatan Android Keystore: Sijil padanan dan profil TV disimpan secara tersulit (AES-256-GCM).",
+      "⚡ Pengurusan Kuasa Pintar: Pantau status aktif/siaga TV secara masa nyata dan sokong sambung semula automatik.",
+      "🎮 Touchpad & Papan Kekunci Pintar: Leret untuk navigasi dan taip terus ke medan carian TV."
+    ],
+    whatsNew: "Versi 3.0.0: Penjenamaan Kampung Remote TV dengan logo baharu, skrin pelancaran, pilihan jenama/model TV, serta pembaikan sambungan TLS port 6466/6467.",
+    minAndroid: "Android 8.0 (Oreo)+",
+    packageName: "com.caixun.remotepro"
   }
 ];

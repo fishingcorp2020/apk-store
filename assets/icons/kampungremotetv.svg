@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="108" height="108">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#1E2B45"/>
+      <stop offset="100%" stop-color="#080B12"/>
+    </radialGradient>
+    <linearGradient id="tvGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E2942"/>
+      <stop offset="100%" stop-color="#0F1523"/>
+    </linearGradient>
+  </defs>
+  <rect width="108" height="108" rx="24" fill="url(#bgGrad)"/>
+  <circle cx="54" cy="54" r="40" fill="none" stroke="#438BFF" stroke-opacity="0.28" stroke-width="1.2"/>
+  <path d="M34,37 L54,24 L74,37" fill="none" stroke="#65E5FF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M43,27 Q54,18 65,27" fill="none" stroke="#438BFF" stroke-width="2.2" stroke-linecap="round"/>
+  <rect x="27" y="39" width="54" height="37" rx="5" fill="url(#tvGrad)" stroke="#438BFF" stroke-width="2.6"/>
+  <circle cx="54" cy="57.5" r="12" fill="none" stroke="#65E5FF" stroke-opacity="0.85" stroke-width="2.2"/>
+  <path d="M54,48v2.5 M54,64.5v2.5 M44.5,57.5h2.5 M61,57.5h2.5" stroke="#F3F6FC" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="54" cy="57.5" r="4.3" fill="#FF3B5C"/>
+  <circle cx="54" cy="57.5" r="2" fill="#FFFFFF"/>
+  <path d="M44,82 L64,82" stroke="#438BFF" stroke-width="2.6" stroke-linecap="round"/>
+</svg>
