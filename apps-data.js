@@ -343,5 +343,41 @@ const APPS_DATA = [
     whatsNew: "Versi 3.0.0: Penjenamaan Kampung Remote TV dengan logo baharu, skrin pelancaran, pilihan jenama/model TV, serta pembaikan sambungan TLS port 6466/6467.",
     minAndroid: "Android 8.0 (Oreo)+",
     packageName: "com.caixun.remotepro"
+  },
+  {
+    id: "jejakmasjid",
+    name: "Kembara Masjid",
+    isOpen: true,
+    subtitle: "Pasport Masjid & Surau Peribadi — Setiap Masjid, Satu Kenangan.",
+    developer: "Atoklure Studio",
+    category: "navigasi",
+    categoryName: "Navigasi & GPS",
+    version: "v1.0.0",
+    fileSize: "25.5 MB",
+    rating: 5.0,
+    reviews: "Baharu",
+    downloads: "100+",
+    ageRating: "3+",
+    icon: "assets/icons/jejakmasjid.svg",
+    apkFile: "apks/KembaraMasjid_v1.0.apk",
+    badge: "Baharu",
+    featured: true,
+    bannerColor: "linear-gradient(135deg, #17321A 0%, #116B5B 100%)",
+    description: "Kembara Masjid ialah aplikasi Android asli (Kotlin & Jetpack Compose) untuk umat Islam meneroka masjid dan surau di seluruh dunia (Google Maps + OpenStreetMap), membuat pengesahan kehadiran GPS secara langsung di lokasi, menjejak Kembara 16 Negeri & Wilayah Malaysia, berkongsi Kad Cop Kenangan, menyemak waktu solat rasmi JAKIM + widget skrin utama, arah kiblat, panduan musafir, 8 Surah Pilihan lengkap dengan audio Qari, Zikir Al-Ma'thurat & Tasbih Digital, serta menyegerakkan rekod ke Google Spreadsheet milik anda sendiri di Google Drive.",
+    highlights: [
+      "Peta Masjid & Surau (Google Maps + OpenStreetMap) + Navigasi 1-Sentuh & Foto Masjid",
+      "Check-in GPS Sebenar, Kad Cop Kenangan Boleh Kongsi, Foto Peribadi & Kembara 16 Negeri Malaysia",
+      "Waktu Solat Rasmi JAKIM, Widget Skrin Utama, Nada Lembut Khas, Kompas Kiblat & Panduan Musafir",
+      "8 Surah Pilihan Luar Talian + Audio Qari Alafasy, Al-Ma'thurat, Tasbih Digital & Tag Kemudahan Musafir"
+    ],
+    features: [
+      "🕌 Pasport Kembara Seumur Hidup & 16 Negeri: Setiap masjid (+1.0 mata) atau surau (+0.5 mata) dikira sekali sahaja bersama penjejak negeri Malaysia & Kad Cop Kenangan boleh kongsi ke WhatsApp.",
+      "📍 Carian Tepat Google Maps & OpenStreetMap: Paparan foto masjid, navigasi pantas Arah, tag kemudahan mesra musafir & perkongsian terus dari Google Maps.",
+      "☁️ Data Milik Anda Sepenuhnya: Rekod disegerakkan ke fail Google Sheets peribadi dalam Google Drive anda sendiri serta album foto kenangan peribadi di peranti.",
+      "📿 Pendamping Ibadah Lengkap: Widget waktu solat skrin utama, nada makluman lembut khas, kompas kiblat, 8 Surah Pilihan (Yasin, Al-Mulk, Ar-Rahman, Al-Waqiah, Al-Kahfi, As-Sajdah, Ad-Dukhan, 3 Qul) + audio Qari & Zikir Pagi/Petang Al-Ma'thurat."
+    ],
+    whatsNew: "Versi 1.0.0 (Kembara Masjid): Intro karikatur premium dua beranak ke masjid, Kad Cop Kenangan boleh kongsi, Kembara 16 Negeri Malaysia, 8 Surah Pilihan + Audio Qari & Al-Ma'thurat, Widget Waktu Solat, Nada Lembut Khas & Tag Kemudahan Musafir.",
+    minAndroid: "Android 8.0 (Oreo)+",
+    packageName: "com.jejakmasjid.app"
   }
 ];

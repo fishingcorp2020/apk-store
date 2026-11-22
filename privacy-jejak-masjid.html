@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polisi Privasi — Kembara Masjid (Privacy Policy)</title>
+  <style>
+    :root {
+      --emerald-deep: #083D35;
+      --emerald-active: #116B5B;
+      --ivory: #F8F6EF;
+      --gold: #C3A66B;
+      --text: #10211E;
+      --muted: #4F635E;
+      --card: #FFFFFF;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--ivory);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    header {
+      background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-active));
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 8px; font-size: 1.9rem; }
+    header p { margin: 0; opacity: 0.9; }
+    main {
+      max-width: 820px;
+      margin: -20px auto 48px;
+      padding: 0 16px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 8px 28px rgba(8, 61, 53, 0.08);
+    }
+    h2 { color: var(--emerald-deep); margin-top: 26px; font-size: 1.2rem; }
+    .badge {
+      display: inline-block;
+      background: #F4ECDA;
+      color: #5C471E;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    a { color: var(--emerald-active); }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 28px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Polisi Privasi — Kembara Masjid</h1>
+    <p>Setiap Masjid, Satu Kenangan. • Privacy Policy</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <span class="badge">Tarikh Kemas Kini / Last Updated: 22 November 2026</span>
+
+      <p>
+        Aplikasi Android <strong>Kembara Masjid</strong> (<code>com.jejakmasjid.app</code>) direka sebagai pasport perjalanan masjid dan surau peribadi yang mengutamakan privasi pengguna. Dokumen ini menerangkan data yang diakses, cara penyimpanan dalam Google Drive peribadi anda, statistik penggunaan asas, dan hak kawalan anda.
+      </p>
+
+      <h2>1. Log Masuk Google &amp; Skop Google Drive (<code>drive.file</code>)</h2>
+      <ul>
+        <li><strong>Google Sign-In (Credential Manager):</strong> Aplikasi hanya menggunakan pengesahan Google untuk mengenal pasti akaun anda (ID akaun Google, nama paparan, alamat emel, dan foto profil). Tiada kata laluan berasingan diminta atau disimpan.</li>
+        <li><strong>Keizinan Berasingan Google Sheets / Drive:</strong> Aplikasi hanya memohon skop minimum <code>https://www.googleapis.com/auth/drive.file</code>. Skop ini memberi akses terhad <strong>hanya kepada fail Google Spreadsheet peribadi bernama <code>JejakMasjid_Data_v1</code></strong> yang dicipta oleh aplikasi ini di dalam Google Drive anda sendiri.</li>
+        <li><strong>Rekod Penggunaan Asas Pembangun (Supabase):</strong> Bagi tujuan pemantauan bilangan pengguna aktif, keserasian peranti, dan sokongan aplikasi, aplikasi menghantar maklumat profil asas akaun (nama paparan, emel, versi aplikasi, model peranti, masa aktif terakhir, serta angka agregat bilangan masjid/surau dilawati) ke pangkalan data Supabase pembangun yang dilindungi kawalan akses (RLS). <strong>Tiada koordinat GPS masa nyata, tiada senarai lokasi lawatan, tiada foto peribadi, dan tiada catatan peribadi</strong> dihantar ke pelayan pembangun.</li>
+        <li><strong>Nota Keselamatan:</strong> Fail Google Spreadsheet disimpan dalam akaun Google Drive anda dan tertakluk kepada kawalan keselamatan akaun Google anda (bukan penyulitan hujung-ke-hujung / E2EE).</li>
+      </ul>
+
+      <h2>2. Data Lokasi GPS</h2>
+      <ul>
+        <li><strong>Penggunaan di Skrin Sahaja (Foreground Only):</strong> Aplikasi tidak menjejak lokasi anda di latar belakang (<em>no background location</em>).</li>
+        <li><strong>Pengesahan Check-in:</strong> Lokasi GPS tepat (<code>ACCESS_FINE_LOCATION</code>) hanya dibaca apabila anda menekan <em>Cari Masjid Berdekatan / Near Me</em>, menekan <em>Saya Hadir Di Sini</em>, atau menghidupkan ciri opt-in <em>Auto-kemas kini lawatan semula</em> semasa aplikasi dibuka.</li>
+        <li><strong>Sederhana &amp; Peribadi:</strong> Rekod lawatan tidak didedahkan kepada orang ramai secara lalai dan tiada papan pendahulu (<em>leaderboard</em>) awam.</li>
+      </ul>
+
+      <h2>3. Perkhidmatan Peta Pihak Ketiga</h2>
+      <p>
+        Untuk memaparkan peta dan mencari masjid/surau berdekatan, koordinat kawasan carian dihantar ke perkhidmatan peta terbuka:
+        <strong>OpenStreetMap Overpass API</strong>, <strong>Photon (Komoot)</strong>, <strong>Nominatim</strong>, dan jubin peta <strong>OpenFreeMap</strong>.
+        Data tempat tertakluk pada lesen ODbL (&copy; OpenStreetMap contributors).
+      </p>
+
+      <h2>4. Penyimpanan Tempatan, Eksport &amp; Pemadaman Data</h2>
+      <ul>
+        <li>Salinan cache disimpan pada storan peribadi aplikasi (Room &amp; DataStore) untuk kegunaan luar talian.</li>
+        <li><strong>Padam Cache Tempatan:</strong> Di halaman <em>Profil</em>, anda boleh memadam data cache peranti tanpa memadam fail Google Sheets di Google Drive anda.</li>
+        <li><strong>Padam Data Awan:</strong> Anda kekal sebagai pemilik penuh fail <code>JejakMasjid_Data_v1</code> dan boleh memadam atau membatalkan akses aplikasi pada bila-bila masa melalui <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">Google Account Permissions</a> atau Google Drive anda.</li>
+      </ul>
+
+      <hr style="border:none;border-top:1px solid #DCE4E0;margin:28px 0;" />
+
+      <h2>English Summary</h2>
+      <p>
+        <strong>Kembara Masjid</strong> (<code>com.jejakmasjid.app</code>) is a personal mosque and surau travel passport. Users sign in via Google Credential Manager and optionally grant the minimal <code>https://www.googleapis.com/auth/drive.file</code> scope so the app can create and sync a private spreadsheet (<code>JejakMasjid_Data_v1</code>) inside the user's own Google Drive. For developer usage analytics and support, the app reports basic account profile and aggregate counters (display name, email, app version, device model, last active time, and total visited counts) to an RLS-protected Supabase database; precise GPS coordinates, exact visit histories, personal photos, and private notes are never uploaded to developer servers. Precise GPS location is requested strictly in the foreground for nearby discovery and check-in verification.
+      </p>
+
+      <h2>5. Hubungi Pembangun / Contact</h2>
+      <p>
+        Pembangun / Developer: Azizul Bin Azmi (Atoklure / FishingCorp)<br />
+        Laman Store: <a href="https://fishingcorp2020.github.io/apk-store/">https://fishingcorp2020.github.io/apk-store/</a>
+      </p>
+    </div>
+
+    <footer>
+      &copy; 2026 Kembara Masjid • Atoklure Apps Store
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin — Kembara Masjid</title>
+  <style>
+    :root {
+      --emerald-deep: #0E2F23;
+      --emerald-mid: #164836;
+      --emerald-soft: #E9F4EF;
+      --gold: #E4BD62;
+      --ivory: #F6F4EC;
+      --card: #FFFFFF;
+      --text: #12241D;
+      --muted: #586E65;
+      --border: #DCE6E1;
+      --danger: #B9382C;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--ivory);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-mid));
+      color: #fff;
+      padding: 24px 20px;
+      border-bottom: 3px solid var(--gold);
+    }
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      color: #FCE6A2;
+      font-family: Georgia, serif;
+    }
+    .brand p {
+      margin: 2px 0 0;
+      font-size: 0.85rem;
+      opacity: 0.88;
+    }
+    .container {
+      max-width: 1120px;
+      margin: 24px auto 48px;
+      padding: 0 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 22px rgba(14, 47, 35, 0.06);
+      margin-bottom: 18px;
+    }
+    .login-box {
+      max-width: 430px;
+      margin: 56px auto;
+      text-align: center;
+    }
+    .login-box h2 {
+      margin: 0 0 8px;
+      color: var(--emerald-deep);
+    }
+    input, button {
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: var(--emerald-deep);
+      color: #fff;
+    }
+    .btn:hover { background: var(--emerald-mid); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.45);
+      color: #fff;
+    }
+    .btn-outline-dark {
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .kpi-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .kpi-val {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--emerald-deep);
+      margin-top: 4px;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--emerald-deep);
+      color: #FCE6A2;
+      border-color: var(--emerald-deep);
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .table-wrap {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    th {
+      background: var(--emerald-soft);
+      color: var(--emerald-deep);
+      font-weight: 700;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+    .badge-active { background: #DCF5E7; color: #12623A; }
+    .badge-idle { background: #EEF2F0; color: #566B62; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.88rem;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    .hidden { display: none !important; }
+    .thumb {
+      width: 72px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--emerald-soft);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1>Kembara Masjid — Dashboard Admin</h1>
+        <p>Statistik Pengguna Berdaftar &amp; Pengurusan Foto Rasmi Masjid • Developed by Atoklure</p>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <a href="admin.html" class="btn btn-outline" style="text-decoration:none;">← Admin Store</a>
+        <a href="index.html" class="btn btn-outline" style="text-decoration:none;">Lihat Store</a>
+        <div id="headerActions" class="hidden" style="display:flex;gap:8px;">
+          <button id="refreshBtn" class="btn btn-outline">Muat Semula</button>
+          <button id="logoutBtn" class="btn btn-outline">Keluar</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- PIN Login Gate -->
+    <section id="loginSection" class="card login-box">
+      <h2>Log Masuk Pentadbir</h2>
+      <p style="color:var(--muted);font-size:0.88rem;margin-top:0;">
+        Masukkan PIN rahsia Admin yang ditetapkan dalam <code>supabase-kembara-admin.sql</code>.
+        Pengesahan disemak di pelayan Supabase (bukan dalam pelayar).
+      </p>
+      <form id="loginForm" style="display:flex;flex-direction:column;gap:10px;margin-top:16px;">
+        <input id="pinInput" type="password" class="input" placeholder="Masukkan PIN Admin..." required autocomplete="current-password" />
+        <button type="submit" class="btn" id="loginBtn">Buka Dashboard</button>
+      </form>
+      <div id="loginError" class="error-msg hidden"></div>
+    </section>
+
+    <!-- Authenticated Dashboard -->
+    <section id="dashboardSection" class="hidden">
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Pengguna Berdaftar</div>
+          <div class="kpi-val" id="kpiTotalUsers">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Aktif 24 Jam (DAU)</div>
+          <div class="kpi-val" id="kpiActiveToday">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Aktif 7 Hari</div>
+          <div class="kpi-val" id="kpiActive7d">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Aktif 30 Hari (MAU)</div>
+          <div class="kpi-val" id="kpiActive30d">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Jumlah Check-in Unik</div>
+          <div class="kpi-val" id="kpiCheckins">0</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="usersTab">Senarai Pengguna Berdaftar</button>
+        <button class="tab-btn" data-tab="photosTab">Foto Rasmi Masjid / Surau (Web)</button>
+      </div>
+
+      <!-- Tab 1: Users Table -->
+      <div id="usersTab" class="card">
+        <div class="toolbar">
+          <input id="userSearch" class="input" style="max-width:340px;" placeholder="Cari nama, emel atau model telefon..." />
+          <button id="exportCsvBtn" class="btn btn-outline-dark">Eksport CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Nama Paparan</th>
+                <th>Emel</th>
+                <th>Masjid / Surau</th>
+                <th>Negeri</th>
+                <th>Bil. Buka</th>
+                <th>Versi &amp; Peranti</th>
+                <th>Kali Terakhir Aktif</th>
+                <th>Mula Daftar</th>
+              </tr>
+            </thead>
+            <tbody id="usersTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: Official Mosque Photos Manager -->
+      <div id="photosTab" class="card hidden">
+        <h3 style="margin-top:0;color:var(--emerald-deep);">Tambah Foto Rasmi Masjid / Surau</h3>
+        <p style="font-size:0.86rem;color:var(--muted);margin-top:-6px;">
+          Foto yang ditambah di sini akan terus dipaparkan dalam senarai <strong>Cari Masjid Berdekatan</strong> dan kad peta aplikasi Kembara Masjid.
+        </p>
+        <form id="photoForm">
+          <div class="form-grid">
+            <input id="pName" class="input" placeholder="Nama Masjid/Surau (cth: Masjid Al-Muttaqin Taman Mahsuri)" required />
+            <input id="pUrl" class="input" type="url" placeholder="URL Foto HTTPS (cth: https://...jpg)" required />
+            <input id="pLat" class="input" type="number" step="any" placeholder="Latitud (pilihan, cth: 6.236274)" />
+            <input id="pLon" class="input" type="number" step="any" placeholder="Longitud (pilihan, cth: 100.424395)" />
+          </div>
+          <button type="submit" class="btn">Simpan Foto Rasmi</button>
+          <span id="photoStatus" style="margin-left:10px;font-size:0.86rem;font-weight:600;"></span>
+        </form>
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;" />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Pratonton</th>
+                <th>Nama Masjid / Surau</th>
+                <th>Koordinat</th>
+                <th>Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="photosTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SUPABASE_URL = "https://jdbrqyhuckmuvjxtqnxe.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_vJC_fF89eBE-rgqXLn7tIg_Ngq0QnI7";
+
+    let activePin = "";
+    let allUsers = [];
+    let allPhotos = [];
+
+    async function callRpc(fnName, body) {
+      const resp = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fnName}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`
+        },
+        body: JSON.stringify(body)
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        throw new Error(data.message || `Ralat HTTP ${resp.status}`);
+      }
+      return data;
+    }
+
+    function fmtDate(iso) {
+      if (!iso) return "-";
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleString("ms-MY", {
+        year: "numeric", month: "short", day: "2-digit",
+        hour: "2-digit", minute: "2-digit"
+      });
+    }
+
+    function isWithin24h(iso) {
+      if (!iso) return false;
+      return (Date.now() - new Date(iso).getTime()) <= 24 * 60 * 60 * 1000;
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+      }[c]));
+    }
+
+    async function loadDashboard() {
+      const data = await callRpc("get_kembara_admin_dashboard", { p_admin_pin: activePin });
+      const s = data.summary || {};
+      document.getElementById("kpiTotalUsers").textContent = s.total_users ?? 0;
+      document.getElementById("kpiActiveToday").textContent = s.active_today ?? 0;
+      document.getElementById("kpiActive7d").textContent = s.active_7d ?? 0;
+      document.getElementById("kpiActive30d").textContent = s.active_30d ?? 0;
+      document.getElementById("kpiCheckins").textContent = s.total_unique_checkins ?? 0;
+
+      allUsers = Array.isArray(data.users) ? data.users : [];
+      allPhotos = Array.isArray(data.photos) ? data.photos : [];
+      renderUsers();
+      renderPhotos();
+    }
+
+    function renderUsers() {
+      const q = document.getElementById("userSearch").value.trim().toLowerCase();
+      const filtered = allUsers.filter(u =>
+        !q ||
+        (u.display_name || "").toLowerCase().includes(q) ||
+        (u.email || "").toLowerCase().includes(q) ||
+        (u.device_model || "").toLowerCase().includes(q)
+      );
+      const tbody = document.getElementById("usersTbody");
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:24px;">Tiada rekod pengguna lagi.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = filtered.map(u => `
+        <tr>
+          <td>${isWithin24h(u.last_seen_at)
+            ? '<span class="badge badge-active">Aktif</span>'
+            : '<span class="badge badge-idle">Sedia</span>'}</td>
+          <td><strong>${escapeHtml(u.display_name)}</strong></td>
+          <td>${escapeHtml(u.email)}</td>
+          <td>${u.unique_places_count ?? 0} (${u.mosque_count ?? 0}M / ${u.surau_count ?? 0}S)</td>
+          <td>${u.states_unlocked_count ?? 0}/16</td>
+          <td>${u.open_count ?? 1}×</td>
+          <td>v${escapeHtml(u.app_version || "1.0.0")} • ${escapeHtml(u.device_model || "-")}</td>
+          <td>${escapeHtml(fmtDate(u.last_seen_at))}</td>
+          <td>${escapeHtml(fmtDate(u.first_seen_at))}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderPhotos() {
+      const tbody = document.getElementById("photosTbody");
+      if (!allPhotos.length) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">Belum ada foto rasmi dimuat naik.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = allPhotos.map(p => `
+        <tr>
+          <td><img class="thumb" src="${escapeHtml(p.photo_url)}" alt="" /></td>
+          <td><strong>${escapeHtml(p.place_name)}</strong><br/><a href="${escapeHtml(p.photo_url)}" target="_blank" rel="noopener" style="font-size:0.76rem;color:var(--emerald-mid);">Buka URL</a></td>
+          <td>${p.latitude != null && p.longitude != null ? `${Number(p.latitude).toFixed(5)}, ${Number(p.longitude).toFixed(5)}` : "-"}</td>
+          <td><button class="btn btn-danger" onclick="deletePhoto(${Number(p.id)})">Padam</button></td>
+        </tr>
+      `).join("");
+    }
+
+    window.deletePhoto = async function(id) {
+      if (!confirm("Padam foto masjid ini?")) return;
+      try {
+        await callRpc("admin_delete_mosque_photo", { p_admin_pin: activePin, p_photo_id: id });
+        await loadDashboard();
+      } catch (e) {
+        alert(e.message);
+      }
+    };
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById("loginError");
+      const btn = document.getElementById("loginBtn");
+      errEl.classList.add("hidden");
+      btn.disabled = true;
+      btn.textContent = "Menyemak PIN...";
+      activePin = document.getElementById("pinInput").value.trim();
+      try {
+        await loadDashboard();
+        document.getElementById("loginSection").classList.add("hidden");
+        document.getElementById("dashboardSection").classList.remove("hidden");
+        document.getElementById("headerActions").classList.remove("hidden");
+      } catch (err) {
+        activePin = "";
+        errEl.textContent = err.message || "PIN tidak sah atau skrip SQL belum dijalankan di Supabase.";
+        errEl.classList.remove("hidden");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Buka Dashboard";
+      }
+    });
+
+    document.getElementById("refreshBtn").addEventListener("click", () => loadDashboard());
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      activePin = "";
+      document.getElementById("pinInput").value = "";
+      document.getElementById("dashboardSection").classList.add("hidden");
+      document.getElementById("headerActions").classList.add("hidden");
+      document.getElementById("loginSection").classList.remove("hidden");
+    });
+
+    document.getElementById("userSearch").addEventListener("input", renderUsers);
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.tab;
+        document.getElementById("usersTab").classList.toggle("hidden", target !== "usersTab");
+        document.getElementById("photosTab").classList.toggle("hidden", target !== "photosTab");
+      });
+    });
+
+    document.getElementById("photoForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const status = document.getElementById("photoStatus");
+      status.style.color = "var(--emerald-mid)";
+      status.textContent = "Menyimpan...";
+      try {
+        const latRaw = document.getElementById("pLat").value.trim();
+        const lonRaw = document.getElementById("pLon").value.trim();
+        await callRpc("admin_upsert_mosque_photo", {
+          p_admin_pin: activePin,
+          p_place_name: document.getElementById("pName").value.trim(),
+          p_photo_url: document.getElementById("pUrl").value.trim(),
+          p_latitude: latRaw ? Number(latRaw) : null,
+          p_longitude: lonRaw ? Number(lonRaw) : null
+        });
+        document.getElementById("photoForm").reset();
+        status.textContent = "Berjaya disimpan ✓";
+        await loadDashboard();
+      } catch (err) {
+        status.style.color = "var(--danger)";
+        status.textContent = err.message;
+      }
+    });
+
+    document.getElementById("exportCsvBtn").addEventListener("click", () => {
+      const headers = ["Nama", "Emel", "CheckInUnik", "Masjid", "Surau", "Negeri", "BilBuka", "Versi", "Peranti", "AktifTerakhir", "MulaDaftar"];
+      const rows = allUsers.map(u => [
+        u.display_name, u.email, u.unique_places_count, u.mosque_count, u.surau_count,
+        u.states_unlocked_count, u.open_count, u.app_version, u.device_model, u.last_seen_at, u.first_seen_at
+      ].map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(","));
+      const csv = [headers.join(","), ...rows].join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `kembara_masjid_users_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
