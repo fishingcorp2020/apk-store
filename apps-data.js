@@ -376,7 +376,7 @@ const APPS_DATA = [
       "☁️ Data Milik Anda Sepenuhnya: Rekod disegerakkan ke fail Google Sheets peribadi dalam Google Drive anda sendiri serta album foto kenangan peribadi di peranti.",
       "📿 Pendamping Ibadah Lengkap: Widget waktu solat skrin utama, nada makluman lembut khas, kompas kiblat, 8 Surah Pilihan (Yasin, Al-Mulk, Ar-Rahman, Al-Waqiah, Al-Kahfi, As-Sajdah, Ad-Dukhan, 3 Qul) + audio Qari & Zikir Pagi/Petang Al-Ma'thurat."
     ],
-    whatsNew: "Versi 1.0.0 (Kembara Masjid): Intro karikatur premium dua beranak ke masjid, Kad Cop Kenangan boleh kongsi, Kembara 16 Negeri Malaysia, 8 Surah Pilihan + Audio Qari & Al-Ma'thurat, Widget Waktu Solat, Nada Lembut Khas & Tag Kemudahan Musafir.",
+    whatsNew: "Versi 1.0.0 (Kembara Masjid): Popup Jejak Automatik Kali Pertama (sah GPS 1-ketik sebaik tiba di masjid), foto masjid automatik Wikimedia Commons & Wikipedia + paparan foto admin rasmi, Kad Cop Kenangan boleh kongsi, Kembara 16 Negeri Malaysia, 8 Surah Pilihan + Audio Qari & Al-Ma'thurat, Widget Waktu Solat & Tag Kemudahan Musafir.",
     minAndroid: "Android 8.0 (Oreo)+",
     packageName: "com.jejakmasjid.app"
   }
