@@ -379,5 +379,41 @@ const APPS_DATA = [
     whatsNew: "Versi 1.0.0 (Kembara Masjid): Popup Jejak Automatik Kali Pertama (sah GPS 1-ketik sebaik tiba di masjid), foto masjid automatik Wikimedia Commons & Wikipedia + paparan foto admin rasmi, Kad Cop Kenangan boleh kongsi, Kembara 16 Negeri Malaysia, 8 Surah Pilihan + Audio Qari & Al-Ma'thurat, Widget Waktu Solat & Tag Kemudahan Musafir.",
     minAndroid: "Android 8.0 (Oreo)+",
     packageName: "com.jejakmasjid.app"
+  },
+  {
+    id: "fishlogpro",
+    name: "FishLog Pro",
+    isOpen: true,
+    subtitle: "Log Tangkapan Ikan Harian Luar Talian — Powered by Atoklure",
+    developer: "Atoklure Studio",
+    category: "utiliti",
+    categoryName: "Utiliti & Memancing",
+    version: "v1.1.0",
+    fileSize: "21.8 MB",
+    rating: 5.0,
+    reviews: "Baharu",
+    downloads: "100+",
+    ageRating: "3+",
+    icon: "assets/icons/fishlogpro.svg",
+    apkFile: "apks/FishLogPro_v1.1.apk",
+    badge: "Terkini",
+    featured: true,
+    bannerColor: "linear-gradient(135deg, #132A24 0%, #556B2F 100%)",
+    description: "FishLog Pro ialah aplikasi log tangkapan ikan harian berbahasa Melayu untuk kaki pancing Malaysia yang berfungsi 100% tanpa internet. Direka khas mengikut gaya hutan gelap & emas dengan skrin Splash Intro, Dashboard bento, tarikh memancing pilihan pengguna, bilangan ekor dan berat paling besar (pilihan — tidak wajib diisi) berserta laporan Harian, Bulanan, Tahunan dan Rekod Peribadi (PB).",
+    highlights: [
+      "Skrin Splash Intro & GUI Hutan Gelap + Emas Premium",
+      "Berat Ikan & Lokasi adalah Pilihan (Tidak Wajib Diisi)",
+      "Pemilih Tarikh Bebas (Date Picker) Termasuk Rekod Lampau",
+      "Laporan Harian, Bulanan, Tahunan & Tab Rekod Peribadi (PB)"
+    ],
+    features: [
+      "🎣 Log Harian Pantas & Fleksibel: Rekod tarikh pilihan, spesies dan bilangan ekor serta-merta; berat, lokasi, gambar dan nota semuanya pilihan.",
+      "🐟 18 Spesies Asas Malaysia + Senarai Ikan & Spesies Tersuai: Haruan, Toman, Sebarau, Peacock Bass (PB), Baung, Siakap dan carian pantas.",
+      "📊 Statistik & Trend Tahunan: Graf palang harian, carta donat pecahan spesies, graf garis Trend Prestasi Tahunan dan tab khusus Rekod PB.",
+      "💾 Sandaran & Eksport Tempatan: Eksport laporan CSV dan sandaran penuh JSON beserta import semula anti-pendua tanpa akses internet."
+    ],
+    whatsNew: "Versi 1.1.0: Skrin Splash Intro baharu dengan butang Mulakan Sekarang, susun atur GUI gaya template Atoklure (Dashboard bento 2x2, Senarai Ikan, tab khusus PB & graf trend tahunan), tema lalai hutan gelap + emas, serta menjadikan berat ikan sebagai medan pilihan sepenuhnya.",
+    minAndroid: "Android 8.0 (Oreo)+",
+    packageName: "com.fishlogpro.app"
   }
 ];

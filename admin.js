@@ -119,6 +119,7 @@ function renderAdminApps() {
   document.getElementById("statTotal").textContent = adminApps.length;
   document.getElementById("statOpen").textContent = openCount;
   document.getElementById("statClosed").textContent = closedCount;
+  updateSyncCatalogButton();
 
   if (adminApps.length === 0) {
     listEl.innerHTML = `<div style="color:var(--muted); padding:20px;">Tiada aplikasi dalam database lagi. Klik "+ Tambah App Baru" untuk mula.</div>`;
@@ -394,4 +395,87 @@ function showAdminToast(msg) {
   window._adminToastTimer = setTimeout(() => {
     toast.classList.remove("show");
   }, 3000);
+}
+
+function getMissingLocalApps() {
+  if (typeof APPS_DATA === "undefined" || !Array.isArray(APPS_DATA)) return [];
+  const existingIds = new Set((adminApps || []).map(a => a.id));
+  return APPS_DATA
+    .map((app, index) => ({ app, sortOrder: app.sortOrder ?? (index + 1) }))
+    .filter(item => item.app && item.app.id && !existingIds.has(item.app.id));
+}
+
+function updateSyncCatalogButton() {
+  const btn = document.getElementById("syncCatalogBtn");
+  if (!btn) return;
+  const missing = getMissingLocalApps();
+  if (missing.length > 0) {
+    btn.style.display = "inline-flex";
+    btn.textContent = `🔄 Segerak App Baharu (${missing.length})`;
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+async function syncMissingAppsFromCatalog() {
+  const sb = getSupabaseClient();
+  const btn = document.getElementById("syncCatalogBtn");
+  const missing = getMissingLocalApps();
+
+  if (missing.length === 0) {
+    showAdminToast("Semua aplikasi dalam apps-data.js sudah pun ada dalam Supabase.");
+    return;
+  }
+
+  const nowIso = new Date().toISOString();
+  const maxSort = (adminApps || []).reduce((max, a) => Math.max(max, Number(a.sort_order) || 0), 0);
+  const rows = missing.map(({ app }, idx) => ({
+    id: app.id,
+    sort_order: maxSort + 1 + idx,
+    name: app.name,
+    is_open: app.isOpen !== false,
+    subtitle: app.subtitle || "",
+    developer: app.developer || "",
+    category: app.category || "utiliti",
+    category_name: app.categoryName || app.category || "Utiliti",
+    version: app.version || "v1.0.0",
+    file_size: app.fileSize || "0 MB",
+    rating: Number(app.rating) || 4.8,
+    reviews: app.reviews || "0",
+    downloads: app.downloads || "0",
+    age_rating: app.ageRating || "3+",
+    icon: app.icon || "",
+    apk_file: app.apkFile || "",
+    badge: app.badge || "",
+    featured: Boolean(app.featured),
+    banner_color: app.bannerColor || "linear-gradient(135deg, #01875f 0%, #055b41 100%)",
+    description: app.description || "",
+    highlights: Array.isArray(app.highlights) ? app.highlights : [],
+    features: Array.isArray(app.features) ? app.features : [],
+    whats_new: app.whatsNew || "",
+    min_android: app.minAndroid || "Android 6.0+",
+    package_name: app.packageName || "",
+    updated_at: nowIso
+  }));
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Sedang menyegerak...";
+  }
+
+  const { error } = await sb.from("apps").insert(rows);
+
+  if (btn) {
+    btn.disabled = false;
+  }
+
+  if (error) {
+    alert("Ralat menyegerak aplikasi baharu: " + error.message);
+    updateSyncCatalogButton();
+    return;
+  }
+
+  const names = missing.map(m => m.app.name).join(", ");
+  showAdminToast(`Berjaya tambah ${missing.length} aplikasi baharu ke store: ${names}`);
+  await loadAdminApps();
 }
