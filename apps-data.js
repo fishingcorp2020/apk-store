@@ -58,13 +58,13 @@ const APPS_DATA = [
   },
   {
     id: "jetinav",
-    name: "JetiNav All-Terrain",
+    name: "JetiNav Pro (All-Terrain)",
     isOpen: true, // Tukar false jika sedang diselenggara
-    subtitle: "GPS Navigasi Luar Talian (Laut, Sungai & Hutan)",
+    subtitle: "GPS Navigasi Luar Talian Pintar (Laut, Sungai & Darat)",
     developer: "Atoklure Marine & Outdoor",
     category: "navigasi",
     categoryName: "Navigasi & GPS",
-    version: "v2.0.0",
+    version: "v2.0 Pro",
     fileSize: "7.5 MB",
     rating: 4.9,
     reviews: "2.8k",
@@ -72,24 +72,24 @@ const APPS_DATA = [
     ageRating: "3+",
     icon: "assets/icons/jetinav.png",
     apkFile: "apks/JetiNav_v2.0_AllTerrain.apk",
-    badge: "Pilihan Nelayan",
+    badge: "GUI Terkini",
     featured: true,
-    bannerColor: "linear-gradient(135deg, #0c5752 0%, #008779 100%)",
-    description: "JetiNav All-Terrain dibina khusus untuk para pemancing laut dalam, bot sungai, pemburu, dan pengembara hutan belantara. Berfungsi 100% tanpa sambungan internet atau menara telefon telco dengan memanfaatkan sensor cip GPS satelit terus dalam telefon bimbit.",
+    bannerColor: "linear-gradient(135deg, #030b17 0%, #0c4a6e 55%, #008779 100%)",
+    description: "JetiNav Pro v2.0 dibina khusus untuk pelayar bot laut, sungai/tasik, serta pengembara hutan belantara dengan GUI premium 100% tanpa internet. Memisahkan paparan info secara pintar mengikut persekitaran — unit Knot & Batu Nautika untuk Laut, jejak alur untuk Sungai/Tasik, serta Ketinggian (Altitud) & jejak denai untuk Darat/Hutan.",
     highlights: [
-      "100% Berfungsi Luar Talian (Zero Internet Required)",
-      "Penandaan Titik Koordinat (Waypoint GPS) Lubuk Ikan",
-      "Jejak Laluan Balik Automatik (Breadcrumb Track Log)",
-      "Mod Red-Vision (Kamera/Skrin Merah Taktikal Malam)"
+      "GUI Premium Terkini 100% Luar Talian (Zero Internet)",
+      "Pemisahan Info Pintar: Mod Laut (Knot/NM), Mod Sungai & Mod Darat (Altitud)",
+      "Bar Penjajaran Haluan Visual + Suara Panduan Belokan & Salah Laluan",
+      "Mod Malam Merah AMOLED (Red-Vision) & Kompas Gyro 360°"
     ],
     features: [
-      "⚓ Pengurusan Lubuk & Jeti: Simpan koordinat lokasi kegemaran bersama nota kedalaman dan hasil tangkapan.",
-      "🧭 Kompas Bearing & Kelajuan Knot: Paparan kelajuan bot (knot / km/h), arah mata angin dan altitud sebenar.",
-      "🔴 Mod Penglihatan Merah: Lindungi adaptasi mata dalam kegelapan laut tanpa menarik perhatian serangga.",
-      "🗺️ Peta Topografi & Kontur Air: Peta luar talian cache untuk panduan perairan selamat."
+      "🌊 Mod Laut Khusus Marin: Paparan Knot (SOG), Batu Nautika (NM), Arah Bearing, radar laut dalam dan tag pantas Jeti, Pengkalan, Lubuk & Pulau.",
+      "🌲 Mod Darat & Hutan: Paparan Ketinggian (Altitud m), kelajuan jalan (km/j), kontur topografi dan tag pantas Parking Kereta, Khemah, Punca Air & Pos Renjer.",
+      "🔊 Suara Belokan & Amaran Salah Laluan: Panduan suara Bahasa Melayu pada jarak 1 km, 500 m, 200 m, 100 m, 50 m serta amaran automatik jika bot/langkah terpesong > 45°.",
+      "🧭 3 Butang Taktikal Mudah Guna: Set Lokasi, Cari Balik & Reset, dilengkapi kompas fallback magnetik dan skrin sentiasa hidup (Always Awake)."
     ],
-    whatsNew: "Versi 2.0 All-Terrain: Enjin peta luar talian dinaik taraf, penjejakan laluan balik lebih jitu, dan mod penjimatan bateri ekstrem.",
-    minAndroid: "Android 7.0 (Nougat)+",
+    whatsNew: "Versi 2.0 Pro (GUI Terkini): Rekaan antaramuka premium baharu 100% luar talian, pemisahan info pintar mengikut Mod Laut/Sungai/Darat, Bar Penjajaran Haluan visual, suara panduan belokan & amaran salah laluan, serta sokongan kompas fallback magnetik.",
+    minAndroid: "Android 6.0 (Marshmallow)+",
     packageName: "com.atoklure.jetinav"
   },
   {

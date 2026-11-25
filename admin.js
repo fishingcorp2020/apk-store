@@ -126,14 +126,21 @@ function renderAdminApps() {
     return;
   }
 
+  const { outdated } = getCatalogSyncDiff();
+  const outdatedMap = new Map(outdated.map(item => [item.app.id, item.app]));
+
   listEl.innerHTML = adminApps.map(app => {
     const isOpen = app.is_open !== false;
+    const localUpdate = outdatedMap.get(app.id);
+    const updateBadge = localUpdate
+      ? `<span style="font-size:0.7rem; background:rgba(56,189,248,0.18); color:#38bdf8; border:1px solid rgba(56,189,248,0.4); padding:2px 7px; border-radius:999px; margin-left:6px;">✨ Kemas kini ${localUpdate.version} tersedia</span>`
+      : "";
     return `
       <div class="admin-app-row ${isOpen ? '' : 'is-closed'}" id="row-${app.id}">
         <div class="app-left">
           <img src="${app.icon || 'assets/icons/tvkita.png'}" alt="${app.name}" onerror="this.style.opacity=0.3">
           <div>
-            <div class="app-name">${app.name} <span style="font-size:0.75rem; color:var(--muted); font-weight:400;">(${app.version})</span></div>
+            <div class="app-name">${app.name} <span style="font-size:0.75rem; color:var(--muted); font-weight:400;">(${app.version})</span>${updateBadge}</div>
             <div class="app-meta">${app.category_name || app.category} &bull; ${app.file_size} &bull; ID: <code>${app.id}</code></div>
           </div>
         </div>
@@ -397,43 +404,64 @@ function showAdminToast(msg) {
   }, 3000);
 }
 
-function getMissingLocalApps() {
-  if (typeof APPS_DATA === "undefined" || !Array.isArray(APPS_DATA)) return [];
-  const existingIds = new Set((adminApps || []).map(a => a.id));
-  return APPS_DATA
-    .map((app, index) => ({ app, sortOrder: app.sortOrder ?? (index + 1) }))
-    .filter(item => item.app && item.app.id && !existingIds.has(item.app.id));
+function getCatalogSyncDiff() {
+  if (typeof APPS_DATA === "undefined" || !Array.isArray(APPS_DATA)) {
+    return { missing: [], outdated: [] };
+  }
+  const existingMap = new Map((adminApps || []).map(a => [a.id, a]));
+  const missing = [];
+  const outdated = [];
+
+  APPS_DATA.forEach((app, index) => {
+    if (!app || !app.id) return;
+    const remote = existingMap.get(app.id);
+    if (!remote) {
+      missing.push({ app, sortOrder: app.sortOrder ?? (index + 1) });
+      return;
+    }
+
+    const checks = [
+      [app.name || "", remote.name || ""],
+      [app.subtitle || "", remote.subtitle || ""],
+      [app.version || "", remote.version || ""],
+      [app.fileSize || "", remote.file_size || ""],
+      [app.apkFile || "", remote.apk_file || ""],
+      [app.badge || "", remote.badge || ""],
+      [app.whatsNew || "", remote.whats_new || ""],
+      [app.description || "", remote.description || ""],
+      [app.bannerColor || "", remote.banner_color || ""],
+      [app.minAndroid || "", remote.min_android || ""]
+    ];
+    const hasDiff = checks.some(([localVal, remoteVal]) => String(localVal).trim() !== String(remoteVal).trim());
+    if (hasDiff) {
+      outdated.push({ app, remote });
+    }
+  });
+
+  return { missing, outdated };
 }
 
 function updateSyncCatalogButton() {
   const btn = document.getElementById("syncCatalogBtn");
   if (!btn) return;
-  const missing = getMissingLocalApps();
-  if (missing.length > 0) {
+  const { missing, outdated } = getCatalogSyncDiff();
+  if (missing.length > 0 || outdated.length > 0) {
     btn.style.display = "inline-flex";
-    btn.textContent = `🔄 Segerak App Baharu (${missing.length})`;
+    if (missing.length > 0 && outdated.length > 0) {
+      btn.textContent = `🔄 Segerak Katalog (${missing.length} baharu, ${outdated.length} kemas kini)`;
+    } else if (missing.length > 0) {
+      btn.textContent = `🔄 Segerak App Baharu (${missing.length})`;
+    } else {
+      btn.textContent = `🔄 Segerak Kemas Kini (${outdated.length})`;
+    }
   } else {
     btn.style.display = "none";
   }
 }
 
-async function syncMissingAppsFromCatalog() {
-  const sb = getSupabaseClient();
-  const btn = document.getElementById("syncCatalogBtn");
-  const missing = getMissingLocalApps();
-
-  if (missing.length === 0) {
-    showAdminToast("Semua aplikasi dalam apps-data.js sudah pun ada dalam Supabase.");
-    return;
-  }
-
-  const nowIso = new Date().toISOString();
-  const maxSort = (adminApps || []).reduce((max, a) => Math.max(max, Number(a.sort_order) || 0), 0);
-  const rows = missing.map(({ app }, idx) => ({
-    id: app.id,
-    sort_order: maxSort + 1 + idx,
+function buildCatalogPayload(app, nowIso) {
+  return {
     name: app.name,
-    is_open: app.isOpen !== false,
     subtitle: app.subtitle || "",
     developer: app.developer || "",
     category: app.category || "utiliti",
@@ -456,26 +484,60 @@ async function syncMissingAppsFromCatalog() {
     min_android: app.minAndroid || "Android 6.0+",
     package_name: app.packageName || "",
     updated_at: nowIso
-  }));
+  };
+}
+
+async function syncMissingAppsFromCatalog() {
+  const sb = getSupabaseClient();
+  const btn = document.getElementById("syncCatalogBtn");
+  const { missing, outdated } = getCatalogSyncDiff();
+
+  if (missing.length === 0 && outdated.length === 0) {
+    showAdminToast("Semua aplikasi dan versi terkini dalam apps-data.js sudah segerak dengan Supabase.");
+    return;
+  }
+
+  const nowIso = new Date().toISOString();
+  const maxSort = (adminApps || []).reduce((max, a) => Math.max(max, Number(a.sort_order) || 0), 0);
 
   if (btn) {
     btn.disabled = true;
     btn.textContent = "Sedang menyegerak...";
   }
 
-  const { error } = await sb.from("apps").insert(rows);
+  if (missing.length > 0) {
+    const rows = missing.map(({ app }, idx) => ({
+      id: app.id,
+      sort_order: maxSort + 1 + idx,
+      is_open: app.isOpen !== false,
+      ...buildCatalogPayload(app, nowIso)
+    }));
+
+    const { error } = await sb.from("apps").insert(rows);
+    if (error) {
+      if (btn) btn.disabled = false;
+      alert("Ralat menyegerak aplikasi baharu: " + error.message);
+      updateSyncCatalogButton();
+      return;
+    }
+  }
+
+  for (const { app } of outdated) {
+    const updatePayload = buildCatalogPayload(app, nowIso);
+    const { error } = await sb.from("apps").update(updatePayload).eq("id", app.id);
+    if (error) {
+      if (btn) btn.disabled = false;
+      alert(`Ralat mengemas kini "${app.name}": ${error.message}`);
+      updateSyncCatalogButton();
+      return;
+    }
+  }
 
   if (btn) {
     btn.disabled = false;
   }
 
-  if (error) {
-    alert("Ralat menyegerak aplikasi baharu: " + error.message);
-    updateSyncCatalogButton();
-    return;
-  }
-
-  const names = missing.map(m => m.app.name).join(", ");
-  showAdminToast(`Berjaya tambah ${missing.length} aplikasi baharu ke store: ${names}`);
+  const syncedNames = [...missing, ...outdated].map(m => m.app.name).join(", ");
+  showAdminToast(`Berjaya segerak ${missing.length} baharu & ${outdated.length} kemas kini ke store: ${syncedNames}`);
   await loadAdminApps();
 }
