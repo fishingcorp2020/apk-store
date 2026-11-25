@@ -88,7 +88,7 @@ const APPS_DATA = [
       "🔊 Suara Belokan & Amaran Salah Laluan: Panduan suara Bahasa Melayu pada jarak 1 km, 500 m, 200 m, 100 m, 50 m serta amaran automatik jika bot/langkah terpesong > 45°.",
       "🧭 3 Butang Taktikal Mudah Guna: Set Lokasi, Cari Balik & Reset, dilengkapi kompas fallback magnetik dan skrin sentiasa hidup (Always Awake)."
     ],
-    whatsNew: "Versi 2.0 Pro (GUI Terkini): Rekaan antaramuka premium baharu 100% luar talian, pemisahan info pintar mengikut Mod Laut/Sungai/Darat, Bar Penjajaran Haluan visual, suara panduan belokan & amaran salah laluan, serta sokongan kompas fallback magnetik.",
+    whatsNew: "Versi 2.0 Pro (GUI Terkini): Rekaan antaramuka premium baharu 100% luar talian, pemisahan info pintar mengikut Mod Laut/Sungai/Darat, borang input nama & catatan lokasi mesra pengguna sebelum set, Bar Penjajaran Haluan visual, suara panduan belokan & amaran salah laluan, serta sokongan kompas fallback magnetik.",
     minAndroid: "Android 6.0 (Marshmallow)+",
     packageName: "com.atoklure.jetinav"
   },
